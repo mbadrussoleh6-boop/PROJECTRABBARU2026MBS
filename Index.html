@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      font-family:"Inter","Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,Roboto,Arial,sans-serif;
+      background:#f1f5f9;
+      color:#0f172a;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    .header{
+      background:#0f172a;
+      color:white;
+      padding:20px;
+    }
+
+    .header h1{
+      margin:0;
+      font-size:28px;
+    }
+
+    .container{
+      padding:20px;
+      max-width:1400px;
+      margin:auto;
+    }
+
+    .search-box{
+      background:white;
+      border-radius:18px;
+      padding:20px;
+      box-shadow:0 10px 30px rgba(0,0,0,.08);
+      margin-bottom:20px;
+    }
+
+    .search-input{
+      width:100%;
+      padding:18px;
+      font-size:18px;
+      border-radius:14px;
+      border:2px solid #cbd5e1;
+      outline:none;
+    }
+
+    .search-input:focus{
+      border-color:#2563eb;
+    }
+
+    .result-list{
+      margin-top:18px;
+      display:grid;
+      gap:12px;
+      max-height:420px;
+      overflow:auto;
+    }
+
+    .item-card{
+      background:#fff;
+      border:1px solid #e2e8f0;
+      border-radius:14px;
+      padding:16px;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    .item-card:hover{
+      transform:translateY(-2px);
+      border-color:#2563eb;
+      box-shadow:0 8px 20px rgba(37,99,235,.15);
+    }
+
+    .designator{
+      font-size:16px;
+      font-weight:bold;
+      color:#2563eb;
+    }
+
+    .uraian{
+      margin-top:6px;
+      color:#334155;
+      font-size:14px;
+    }
+
+    .price{
+      margin-top:10px;
+      display:flex;
+      gap:20px;
+      font-size:13px;
+      color:#475569;
+    }
+
+    .table-card{
+      background:white;
+      border-radius:22px;
+      box-shadow:0 12px 34px rgba(15,23,42,.08);
+      border:1px solid #e2e8f0;
+      overflow:hidden;
+    }
+    
+    .table-toolbar{
+      padding:18px 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      border-bottom:1px solid #e2e8f0;
+      background:linear-gradient(180deg,#ffffff,#f8fafc);
+    }
+    
+    .table-toolbar h2{
+      margin:0;
+      font-size:18px;
+      color:#0f172a;
+      letter-spacing:-.02em;
+    }
+    
+    .table-toolbar p{
+      margin:4px 0 0;
+      color:#64748b;
+      font-size:13px;
+    }
+    
+    .table-count{
+      background:#eff6ff;
+      color:#2563eb;
+      border:1px solid #bfdbfe;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    
+    .table-scroll{
+      width:100%;
+      overflow:auto;
+    }
+    
+    .rab-table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      background:white;
+      min-width:980px;
+    }
+    
+    .rab-table thead th{
+      position:sticky;
+      top:0;
+      z-index:2;
+      background:#0f172a;
+      color:#f8fafc;
+      padding:14px 16px;
+      text-align:left;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      border-bottom:1px solid #1e293b;
+      white-space:nowrap;
+    }
+    
+    .rab-table tbody td{
+      padding:14px 16px;
+      border-bottom:1px solid #e2e8f0;
+      font-size:13.5px;
+      color:#334155;
+      vertical-align:middle;
+      line-height:1.45;
+    }
+    
+    .rab-table tbody tr{
+      transition:.15s ease;
+    }
+    
+    .rab-table tbody tr:nth-child(even){
+      background:#f8fafc;
+    }
+    
+    .rab-table tbody tr:hover{
+      background:#eff6ff;
+    }
+    
+    .rab-table tbody tr:last-child td{
+      border-bottom:none;
+    }
+    
+    .rab-table td:first-child b{
+      color:#0f172a;
+      font-weight:800;
+      font-size:13.5px;
+      white-space:nowrap;
+      letter-spacing:.01em;
+    }
+    
+    .rab-table td:nth-child(2){
+      color:#334155;
+      min-width:320px;
+    }
+    
+    .rab-table td:nth-child(3){
+      color:#64748b;
+      font-weight:600;
+      white-space:nowrap;
+    }
+    
+    .rab-table td:nth-child(4),
+    .rab-table td:nth-child(5),
+    .rab-table td:nth-child(7){
+      font-variant-numeric:tabular-nums;
+      white-space:nowrap;
+    }
+    
+    .right{
+      text-align:right;
+    }
+    
+    .volume-input{
+      width:76px;
+      padding:9px 10px;
+      border-radius:10px;
+      border:1px solid #cbd5e1;
+      background:white;
+      color:#0f172a;
+      font-weight:700;
+      text-align:center;
+      outline:none;
+      transition:.15s;
+    }
+    
+    .volume-input:focus{
+      border-color:#2563eb;
+      box-shadow:0 0 0 3px rgba(37,99,235,.14);
+    }
+    
+    .btn-delete{
+      background:#fef2f2;
+      color:#dc2626;
+      border:1px solid #fecaca;
+      padding:8px 11px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:12.5px;
+      transition:.15s;
+    }
+    
+    .btn-delete:hover{
+      background:#dc2626;
+      color:white;
+      border-color:#dc2626;
+    }
+
+    @media(max-width:768px){
+      .bottom-total{
+        grid-template-columns:1fr;
+        margin-bottom:20px;
+      }
+    }
+    
+    @media(max-width:768px){
+      .table-toolbar{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+    
+      .table-card{
+        border-radius:18px;
+      }
+    
+      .rab-table{
+        min-width:900px;
+      }
+    }
+
+    @media(max-width:768px){
+
+      .floating-total{
+        left:10px;
+        right:10px;
+        bottom:10px;
+        min-width:auto;
+      }
+
+      table{
+        font-size:12px;
+      }
+
+      .search-input{
+        font-size:16px;
+      }
+
+    }
+
+    .bottom-total{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:repeat(3,1fr) 260px;
+      gap:14px;
+      align-items:stretch;
+    }
+
+    .total-card{
+      background:white;
+      border-radius:14px;
+      padding:18px;
+      box-shadow:0 8px 24px rgba(0,0,0,.08);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .total-card span{
+      color:#475569;
+      font-weight:bold;
+    }
+
+    .total-card b{
+      font-size:18px;
+    }
+
+    .grand-card{
+      background:#ef4444;
+      color:white;
+    }
+
+    .grand-card span{
+      color:white;
+    }
+
+    @media(max-width:768px){
+      .bottom-total{
+        grid-template-columns:1fr;
+        margin-bottom:20px;
+      }
+    }
+
+    .modal-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,.65);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+    }
+
+    .modal-card{
+      background:white;
+      width:100%;
+      max-width:520px;
+      border-radius:24px;
+      padding:24px;
+      box-shadow:0 30px 80px rgba(0,0,0,.35);
+      animation:pop .2s ease;
+    }
+
+    .modal-card h2{
+      margin:0;
+      color:#2563eb;
+      font-size:24px;
+    }
+
+    .modal-card p{
+      color:#475569;
+      font-size:14px;
+      line-height:1.5;
+      margin:8px 0 18px;
+    }
+
+    .modal-card label{
+      font-weight:bold;
+      display:block;
+      margin-bottom:8px;
+    }
+
+    .volume-control{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .volume-control button{
+      width:48px;
+      height:48px;
+      border:none;
+      border-radius:14px;
+      background:#0f172a;
+      color:white;
+      font-size:22px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    .volume-control input{
+      flex:1;
+      height:48px;
+      text-align:center;
+      font-size:22px;
+      font-weight:bold;
+      border:1px solid #cbd5e1;
+      border-radius:14px;
+      outline:none;
+    }
+
+    .volume-control input:focus{
+      border-color:#2563eb;
+      box-shadow:0 0 0 3px rgba(37,99,235,.15);
+    }
+
+    .modal-actions{
+      display:flex;
+      gap:12px;
+      margin-top:20px;
+    }
+
+    .modal-actions button{
+      flex:1;
+      border:none;
+      padding:14px;
+      border-radius:14px;
+      font-weight:bold;
+      font-size:14px;
+      cursor:pointer;
+    }
+
+    .btn-cancel{
+      background:#e5e7eb;
+      color:#111827;
+    }
+
+    .btn-add{
+      background:#2563eb;
+      color:white;
+    }
+
+    .btn-add:hover{
+      background:#1d4ed8;
+    }
+
+    .btn-cancel:hover{
+      background:#d1d5db;
+    }
+
+    @keyframes pop{
+      from{
+        transform:scale(.95);
+        opacity:0;
+      }
+      to{
+        transform:scale(1);
+        opacity:1;
+      }
+    }
+
+    .item-summary{
+      margin-top:16px;
+      background:#f8fafc;
+      border:1px solid #e2e8f0;
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .item-summary-title{
+      font-size:12px;
+      font-weight:bold;
+      color:#64748b;
+      margin-bottom:8px;
+    }
+
+    .item-row-preview{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding:8px 0;
+      border-bottom:1px dashed #cbd5e1;
+    }
+
+    .item-row-preview:last-child{
+      border-bottom:none;
+    }
+
+    .item-row-preview b{
+      color:#2563eb;
+    }
+
+    .item-row-preview small{
+      display:block;
+      color:#64748b;
+      margin-top:3px;
+    }
+
+    .gandengan-box{
+      margin-top:16px;
+      padding:16px;
+      border-radius:18px;
+      border:2px solid #2563eb;
+      background:#eff6ff;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    .gandengan-box.active{
+      border-color:#2563eb;
+      background:#dbeafe;
+    }
+
+    .gandengan-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+
+    .gandengan-title{
+      font-weight:bold;
+      color:#1d4ed8;
+    }
+
+    .gandengan-badge{
+      background:#2563eb;
+      color:white;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+    }
+
+    .gandengan-desc{
+      margin-top:8px;
+      color:#334155;
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .total-preview{
+      margin-top:16px;
+      background:#0f172a;
+      color:white;
+      border-radius:16px;
+      padding:16px;
+    }
+
+    .total-preview-line{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:8px;
+      font-size:13px;
+    }
+
+    .total-preview-line.grand{
+      border-top:1px solid rgba(255,255,255,.2);
+      padding-top:10px;
+      margin-top:10px;
+      font-size:18px;
+      font-weight:bold;
+      color:#22c55e;
+    }
+
+    .gandengan-box:not(.active){
+      border-color:#cbd5e1;
+      background:#f8fafc;
+    }
+
+    .gandengan-box:not(.active) .gandengan-badge{
+      background:#64748b;
+    }
+
+    .option-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:16px;
+    }
+
+    .option-card{
+      border:2px solid #e2e8f0;
+      background:#f8fafc;
+      border-radius:16px;
+      padding:14px;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    .option-card:hover{
+      border-color:#2563eb;
+    }
+
+    .option-card.active{
+      border-color:#2563eb;
+      background:#eff6ff;
+    }
+
+    .option-card.disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      background:#e5e7eb;
+    }
+
+    .option-card-title{
+      font-weight:bold;
+      color:#0f172a;
+      margin-bottom:6px;
+    }
+
+    .option-card.active .option-card-title{
+      color:#2563eb;
+    }
+
+    .option-card small{
+      color:#64748b;
+      line-height:1.4;
+    }
+
+    .option-badge{
+      margin-top:10px;
+      display:inline-block;
+      padding:4px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+      background:#e2e8f0;
+      color:#334155;
+    }
+
+    .option-card.active .option-badge{
+      background:#2563eb;
+      color:white;
+    }
+
+    @media(max-width:768px){
+      .option-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .price-nominal{
+      color:#0f172a;
+      font-weight:700;
+      font-variant-numeric:tabular-nums;
+    }
+
+    .price-zero{
+      color:#cbd5e1;
+      font-weight:500;
+      font-variant-numeric:tabular-nums;
+    }
+
+    .project-card{
+      background:white;
+      border-radius:22px;
+      padding:20px;
+      margin-bottom:20px;
+      box-shadow:0 12px 34px rgba(15,23,42,.08);
+      border:1px solid #e2e8f0;
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:18px;
+      align-items:end;
+    }
+
+    .project-info label{
+      display:block;
+      font-size:13px;
+      font-weight:800;
+      color:#0f172a;
+      margin-bottom:8px;
+      letter-spacing:.01em;
+    }
+
+    .project-info input{
+      width:100%;
+      padding:15px 16px;
+      border-radius:14px;
+      border:2px solid #cbd5e1;
+      outline:none;
+      font-size:16px;
+      font-weight:700;
+      color:#0f172a;
+      background:#f8fafc;
+      transition:.15s;
+    }
+
+    .project-info input::placeholder{
+      color:#94a3b8;
+      font-weight:500;
+    }
+
+    .project-info input:focus{
+      background:white;
+      border-color:#2563eb;
+      box-shadow:0 0 0 3px rgba(37,99,235,.14);
+    }
+
+    .project-helper{
+      margin-top:8px;
+      font-size:12.5px;
+      color:#64748b;
+    }
+
+    .project-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .btn-save-rab{
+      border:none;
+      background:#16a34a;
+      color:white;
+      padding:15px 22px;
+      border-radius:14px;
+      font-size:14px;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:0 10px 24px rgba(22,163,74,.25);
+      transition:.15s;
+      white-space:nowrap;
+    }
+
+    .btn-save-rab:hover{
+      background:#15803d;
+      transform:translateY(-1px);
+    }
+
+    .btn-save-rab:disabled{
+      opacity:.7;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    .save-note{
+      font-size:12px;
+      color:#64748b;
+      text-align:right;
+      margin-top:7px;
+    }
+
+    .save-message{
+      display:none;
+      margin-top:12px;
+      padding:11px 13px;
+      border-radius:12px;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .save-message.success{
+      display:block;
+      background:#ecfdf5;
+      color:#15803d;
+      border:1px solid #bbf7d0;
+    }
+
+    .save-message.error{
+      display:block;
+      background:#fef2f2;
+      color:#dc2626;
+      border:1px solid #fecaca;
+    }
+
+    @media(max-width:768px){
+      .project-card{
+        grid-template-columns:1fr;
+        align-items:stretch;
+      }
+
+      .project-actions{
+        width:100%;
+      }
+
+      .btn-save-rab{
+        width:100%;
+      }
+
+      .save-note{
+        text-align:left;
+      }
+    }
+
+    .save-panel{
+      background:white;
+      border-radius:14px;
+      padding:16px;
+      box-shadow:0 8px 24px rgba(0,0,0,.08);
+      border:1px solid #e2e8f0;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:8px;
+    }
+
+    .save-panel .btn-save-rab{
+      width:100%;
+    }
+
+    .project-card{
+      grid-template-columns:1fr;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>RAB Generator</h1>
+</div>
+
+<div class="container">
+
+  <div class="project-card">
+
+    <div class="project-info">
+      <label>Nama Pekerjaan</label>
+
+      <input
+        type="text"
+        id="namaPekerjaan"
+        placeholder="Contoh: Pemasangan Akses Internet STO Surabaya"
+      >
+
+      <div class="project-helper">
+        Nama pekerjaan akan ikut tersimpan bersama detail RAB.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="search-box">
+
+    <input
+      type="text"
+      id="searchInput"
+      class="search-input"
+      placeholder="🔍 Cari Designator atau Uraian..."
+      onkeyup="searchItem()"
+    >
+
+    <div class="result-list" id="resultList"></div>
+
+  </div>
+
+  <div class="table-card">
+
+    <div class="table-toolbar">
+      <div>
+        <h2>Daftar RAB</h2>
+        <p>Item pekerjaan yang sudah dipilih</p>
+      </div>
+
+      <div class="table-count" id="itemCount">
+        0 Item
+      </div>
+    </div>
+
+    <div class="table-scroll">
+    
+      <table class="rab-table">
+      
+        <thead>
+          <tr>
+            <th>Designator</th>
+            <th>Uraian</th>
+            <th>Satuan</th>
+            <th>Harga Material</th>
+            <th>Harga Jasa</th>
+            <th>Volume</th>
+            <th>Total</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+
+        <tbody id="tbodyRab"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <div class="bottom-total">
+
+    <div class="total-card">
+      <span>Total Material</span>
+      <b id="grandMaterial">Rp 0</b>
+    </div>
+
+    <div class="total-card">
+      <span>Total Jasa</span>
+      <b id="grandJasa">Rp 0</b>
+    </div>
+
+    <div class="total-card grand-card">
+      <span>Total RAB</span>
+      <b id="grandTotal">Rp 0</b>
+    </div>
+
+    <div class="save-panel">
+      <button
+        type="button"
+        id="btnSaveRab"
+        class="btn-save-rab"
+        onclick="saveRab()"
+      >
+        Simpan RAB
+      </button>
+
+      <div class="save-note">
+        ID RAB dibuat otomatis
+      </div>
+    </div>
+
+  </div>
+
+  <div id="saveMessage" class="save-message"></div>
+
+</div>
+
+<script>
+
+let masterData = [];
+let rabItems = [];
+let currentSearchGroups = [];
+
+window.onload = function(){
+
+  google.script.run
+    .withSuccessHandler(function(data){
+
+      masterData = data;
+
+    })
+    .getMasterData();
+
+};
+
+function getBaseDesignator(designator){
+
+  return String(designator || "")
+    .replace(/^M-/i, "")
+    .replace(/^J-/i, "");
+
+}
+
+function getJenisDesignator(designator){
+
+  if(String(designator).startsWith("M-")){
+    return "material";
+  }
+
+  if(String(designator).startsWith("J-")){
+    return "jasa";
+  }
+
+  return "lain";
+
+}
+
+function buildDesignatorGroups(){
+
+  const groups = {};
+
+  masterData.forEach(item => {
+
+    const base = getBaseDesignator(item.designator);
+    const jenis = getJenisDesignator(item.designator);
+
+    if(!groups[base]){
+      groups[base] = {
+        base: base,
+        material: null,
+        jasa: null,
+        lain: [],
+        urutan: item.urutan,
+        uraian: item.uraian
+      };
+    }
+
+    if(jenis === "material"){
+      groups[base].material = item;
+    }
+
+    else if(jenis === "jasa"){
+      groups[base].jasa = item;
+    }
+
+    else{
+      groups[base].lain.push(item);
+    }
+
+    groups[base].urutan =
+      Math.min(groups[base].urutan, item.urutan);
+
+  });
+
+  return Object.values(groups)
+    .sort((a,b) => a.urutan - b.urutan);
+
+}
+
+function searchItem(){
+
+  const keyword = document
+    .getElementById("searchInput")
+    .value
+    .toLowerCase();
+
+  const resultList = document.getElementById("resultList");
+
+  resultList.innerHTML = "";
+
+  if(keyword.length < 2){
+    return;
+  }
+
+  const selectedDesignators =
+    rabItems.map(item => item.designator);
+
+  const groups = buildDesignatorGroups();
+
+  const filtered = groups.filter(group => {
+
+    const materialAvailable =
+      group.material &&
+      !selectedDesignators.includes(group.material.designator);
+
+    const jasaAvailable =
+      group.jasa &&
+      !selectedDesignators.includes(group.jasa.designator);
+
+    const lainAvailable =
+      group.lain.some(item =>
+        !selectedDesignators.includes(item.designator)
+      );
+
+    const masihAdaYangBisaDipilih =
+      materialAvailable || jasaAvailable || lainAvailable;
+
+    const matchKeyword =
+      group.base.toLowerCase().includes(keyword) ||
+      String(group.uraian || "").toLowerCase().includes(keyword) ||
+      String(group.material?.uraian || "").toLowerCase().includes(keyword) ||
+      String(group.jasa?.uraian || "").toLowerCase().includes(keyword);
+
+    return masihAdaYangBisaDipilih && matchKeyword;
+
+  }).slice(0,20);
+
+  currentSearchGroups = filtered;
+
+  filtered.forEach((group,index) => {
+
+    const hargaMaterial =
+      group.material ? group.material.hargaMaterial : 0;
+
+    const hargaJasa =
+      group.jasa ? group.jasa.hargaJasa : 0;
+
+    resultList.innerHTML += `
+
+      <div class="item-card" onclick="addGroupFromSearch(${index})">
+
+        <div class="designator">
+          ${group.base}
+        </div>
+
+        <div class="uraian">
+          ${group.uraian || ""}
+        </div>
+
+        <div class="price">
+          <div>Material : ${formatRupiah(hargaMaterial)}</div>
+          <div>Jasa : ${formatRupiah(hargaJasa)}</div>
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+let selectedGroup = null;
+let includeMaterial = true;
+let includeJasa = true;
+
+function addGroupFromSearch(index){
+
+  const group = currentSearchGroups[index];
+
+  if(!group){
+    return;
+  }
+
+  openVolumeModal(group);
+
+}
+
+function toggleOption(type){
+
+  if(!selectedGroup){
+    return;
+  }
+
+  if(type === "material"){
+
+    if(!selectedGroup.material){
+      return;
+    }
+
+    includeMaterial = !includeMaterial;
+
+  }
+
+  if(type === "jasa"){
+
+    if(!selectedGroup.jasa){
+      return;
+    }
+
+    includeJasa = !includeJasa;
+
+  }
+
+  updateModalPreview();
+
+}
+
+function openVolumeModal(group){
+
+  selectedGroup = group;
+
+  const selectedDesignators =
+    rabItems.map(item => item.designator);
+
+  includeMaterial =
+    group.material &&
+    !selectedDesignators.includes(group.material.designator);
+
+  includeJasa =
+    group.jasa &&
+    !selectedDesignators.includes(group.jasa.designator);
+
+  document.getElementById("modalDesignator").innerText =
+    group.base;
+
+  document.getElementById("modalUraian").innerText =
+    group.uraian || "";
+
+  document.getElementById("modalVolume").value = 1;
+
+  updateOptionCards();
+
+  updateModalPreview();
+
+  document.getElementById("volumeModal").style.display = "flex";
+
+  setTimeout(() => {
+    document.getElementById("modalVolume").focus();
+    document.getElementById("modalVolume").select();
+  }, 100);
+
+}
+
+function updateOptionCards(){
+
+  if(!selectedGroup){
+    return;
+  }
+
+  const selectedDesignators =
+    rabItems.map(item => item.designator);
+
+  const materialCard =
+    document.getElementById("materialOptionCard");
+
+  const jasaCard =
+    document.getElementById("jasaOptionCard");
+
+  const materialDesc =
+    document.getElementById("materialOptionDesc");
+
+  const jasaDesc =
+    document.getElementById("jasaOptionDesc");
+
+  const materialBadge =
+    document.getElementById("materialOptionBadge");
+
+  const jasaBadge =
+    document.getElementById("jasaOptionBadge");
+
+  if(selectedGroup.material){
+
+    const sudahDipilih =
+      selectedDesignators.includes(selectedGroup.material.designator);
+
+    materialCard.style.display = "block";
+    materialDesc.innerText = selectedGroup.material.uraian;
+
+    if(sudahDipilih){
+      materialCard.className = "option-card disabled";
+      materialBadge.innerText = "Sudah dipilih";
+    }
+
+    else if(includeMaterial){
+      materialCard.className = "option-card active";
+      materialBadge.innerText = "Dipilih";
+    }
+
+    else{
+      materialCard.className = "option-card";
+      materialBadge.innerText = "Tidak dipilih";
+    }
+
+  } else {
+    materialCard.style.display = "none";
+  }
+
+  if(selectedGroup.jasa){
+
+    const sudahDipilih =
+      selectedDesignators.includes(selectedGroup.jasa.designator);
+
+    jasaCard.style.display = "block";
+    jasaDesc.innerText = selectedGroup.jasa.uraian;
+
+    if(sudahDipilih){
+      jasaCard.className = "option-card disabled";
+      jasaBadge.innerText = "Sudah dipilih";
+    }
+
+    else if(includeJasa){
+      jasaCard.className = "option-card active";
+      jasaBadge.innerText = "Dipilih";
+    }
+
+    else{
+      jasaCard.className = "option-card";
+      jasaBadge.innerText = "Tidak dipilih";
+    }
+
+  } else {
+    jasaCard.style.display = "none";
+  }
+
+}
+
+function updateModalPreview(){
+
+  if(!selectedGroup){
+    return;
+  }
+
+  const volume =
+    Number(document.getElementById("modalVolume").value) || 1;
+
+  const selectedDesignators =
+    rabItems.map(item => item.designator);
+
+  const previewItems = [];
+
+  if(
+    selectedGroup.material &&
+    includeMaterial &&
+    !selectedDesignators.includes(selectedGroup.material.designator)
+  ){
+    previewItems.push(selectedGroup.material);
+  }
+
+  if(
+    selectedGroup.jasa &&
+    includeJasa &&
+    !selectedDesignators.includes(selectedGroup.jasa.designator)
+  ){
+    previewItems.push(selectedGroup.jasa);
+  }
+
+  const previewBox =
+    document.getElementById("modalItemPreview");
+
+  previewBox.innerHTML = "";
+
+  let totalMaterial = 0;
+  let totalJasa = 0;
+
+  if(previewItems.length === 0){
+
+    previewBox.innerHTML = `
+      <div style="color:#ef4444;font-weight:bold;">
+        Pilih minimal Material atau Jasa
+      </div>
+    `;
+
+  }
+
+  previewItems.forEach(item => {
+
+    totalMaterial += item.hargaMaterial * volume;
+    totalJasa += item.hargaJasa * volume;
+
+    previewBox.innerHTML += `
+
+      <div class="item-row-preview">
+        <div>
+          <b>${item.designator}</b>
+          <small>${item.uraian}</small>
+        </div>
+        <div>
+          x ${volume}
+        </div>
+      </div>
+
+    `;
+
+  });
+
+  document.getElementById("modalTotalMaterial").innerText =
+    formatRupiah(totalMaterial);
+
+  document.getElementById("modalTotalJasa").innerText =
+    formatRupiah(totalJasa);
+
+  document.getElementById("modalGrandTotal").innerText =
+    formatRupiah(totalMaterial + totalJasa);
+
+  document.getElementById("btnConfirmAdd").innerText =
+    `Tambahkan ${previewItems.length} Item`;
+
+  updateOptionCards();
+
+}
+
+function closeVolumeModal(){
+
+  selectedGroup = null;
+  includeMaterial = true;
+  includeJasa = true;
+
+  document.getElementById("volumeModal").style.display = "none";
+
+}
+
+function kurangVolume(){
+
+  const input = document.getElementById("modalVolume");
+
+  let value = Number(input.value) || 1;
+
+  if(value > 1){
+    input.value = value - 1;
+  }
+
+  updateModalPreview();
+
+}
+
+function tambahVolume(){
+
+  const input = document.getElementById("modalVolume");
+
+  let value = Number(input.value) || 1;
+
+  input.value = value + 1;
+
+  updateModalPreview();
+
+}
+
+function confirmAddItem(){
+
+  const volume =
+    Number(document.getElementById("modalVolume").value);
+
+  if(!selectedGroup){
+    return;
+  }
+
+  if(!volume || volume <= 0){
+    alert("Volume harus lebih dari 0");
+    return;
+  }
+
+  const selectedDesignators =
+    rabItems.map(item => item.designator);
+
+  const itemsToAdd = [];
+
+  if(
+    selectedGroup.material &&
+    includeMaterial &&
+    !selectedDesignators.includes(selectedGroup.material.designator)
+  ){
+    itemsToAdd.push(selectedGroup.material);
+  }
+
+  if(
+    selectedGroup.jasa &&
+    includeJasa &&
+    !selectedDesignators.includes(selectedGroup.jasa.designator)
+  ){
+    itemsToAdd.push(selectedGroup.jasa);
+  }
+
+  if(itemsToAdd.length === 0){
+    alert("Pilih minimal Material atau Jasa");
+    return;
+  }
+
+  itemsToAdd.forEach(item => {
+
+    rabItems.push({
+      ...item,
+      volume: volume
+    });
+
+  });
+
+  renderTable();
+
+  document.getElementById("searchInput").value = "";
+  document.getElementById("resultList").innerHTML = "";
+
+  closeVolumeModal();
+
+}
+
+function renderTable(){
+
+  const tbody = document.getElementById("tbodyRab");
+
+  const itemCount = document.getElementById("itemCount");
+
+  if(itemCount){
+    itemCount.innerText = `${rabItems.length} Item`;
+  }
+
+  tbody.innerHTML = "";
+
+  rabItems.sort((a,b) => a.urutan - b.urutan);
+
+  let grandMaterial = 0;
+  let grandJasa = 0;
+
+  rabItems.forEach((item,index)=>{
+
+    const totalMaterial =
+      item.hargaMaterial * item.volume;
+
+    const totalJasa =
+      item.hargaJasa * item.volume;
+
+    grandMaterial += totalMaterial;
+    grandJasa += totalJasa;
+
+    tbody.innerHTML += `
+
+      <tr>
+
+        <td>
+          <b>${item.designator}</b>
+        </td>
+
+        <td>${item.uraian}</td>
+
+        <td>${item.satuan}</td>
+
+        <td class="right ${item.hargaMaterial === 0 ? 'price-zero' : 'price-nominal'}">
+          ${formatRupiah(item.hargaMaterial)}
+        </td>
+
+        <td class="right ${item.hargaJasa === 0 ? 'price-zero' : 'price-nominal'}">
+          ${formatRupiah(item.hargaJasa)}
+        </td>
+
+        <td class="right">
+
+          <input
+            type="number"
+            class="volume-input"
+            value="${item.volume}"
+            onchange="updateVolume(${index},this.value)"
+          >
+
+        </td>
+
+        <td class="right">
+          ${formatRupiah(totalMaterial + totalJasa)}
+        </td>
+
+        <td>
+          <button
+            class="btn-delete"
+            onclick="deleteItem(${index})"
+          >
+            Hapus
+          </button>
+        </td>
+
+      </tr>
+
+    `;
+
+  });
+
+  document.getElementById("grandMaterial").innerText =
+    formatRupiah(grandMaterial);
+
+  document.getElementById("grandJasa").innerText =
+    formatRupiah(grandJasa);
+
+  document.getElementById("grandTotal").innerText =
+    formatRupiah(grandMaterial + grandJasa);
+
+}
+
+function updateVolume(index,value){
+
+  rabItems[index].volume = Number(value);
+
+  renderTable();
+
+}
+
+function deleteItem(index){
+
+  rabItems.splice(index,1);
+
+  renderTable();
+
+}
+
+function saveRab(){
+
+  const namaPekerjaan =
+    document.getElementById("namaPekerjaan").value.trim();
+
+  if(!namaPekerjaan){
+    showSaveMessage("Nama pekerjaan wajib diisi.", "error");
+    document.getElementById("namaPekerjaan").focus();
+    return;
+  }
+
+  if(rabItems.length === 0){
+    showSaveMessage("Item RAB masih kosong.", "error");
+    return;
+  }
+
+  const payload = {
+    namaPekerjaan: namaPekerjaan,
+    items: rabItems.map(item => ({
+      designator: item.designator,
+      uraian: item.uraian,
+      satuan: item.satuan,
+      hargaMaterial: Number(item.hargaMaterial) || 0,
+      hargaJasa: Number(item.hargaJasa) || 0,
+      volume: Number(item.volume) || 0
+    }))
+  };
+
+  setSaveLoading(true);
+
+  google.script.run
+    .withSuccessHandler(function(response){
+    
+      setSaveLoading(false);
+
+      const rabId = response.rabId;
+
+      resetRabInput();
+
+      showSaveMessage(
+        `RAB berhasil disimpan. ID: ${rabId}`,
+        "success"
+      );
+
+    })
+    .withFailureHandler(function(error){
+
+      setSaveLoading(false);
+
+      showSaveMessage(
+        error.message || "Gagal menyimpan RAB.",
+        "error"
+      );
+
+    })
+    .saveRab(payload);
+
+}
+
+function setSaveLoading(isLoading){
+
+  const button =
+    document.getElementById("btnSaveRab");
+
+  if(!button){
+    return;
+  }
+
+  button.disabled = isLoading;
+
+  button.innerText = isLoading
+    ? "Menyimpan..."
+    : "Simpan RAB";
+
+}
+
+function showSaveMessage(message, type){
+
+  const box =
+    document.getElementById("saveMessage");
+
+  if(!box){
+    return;
+  }
+
+  box.className = `save-message ${type}`;
+  box.innerText = message;
+
+}
+
+function resetRabInput(){
+
+  rabItems = [];
+  currentSearchGroups = [];
+  selectedGroup = null;
+  includeMaterial = true;
+  includeJasa = true;
+
+  document.getElementById("namaPekerjaan").value = "";
+  document.getElementById("searchInput").value = "";
+  document.getElementById("resultList").innerHTML = "";
+
+  document.getElementById("volumeModal").style.display = "none";
+
+  renderTable();
+
+}
+
+function formatRupiah(number){
+
+  return "Rp " + Number(number || 0)
+    .toLocaleString("id-ID");
+
+}
+
+document.addEventListener("keydown", function(e){
+
+  const modalOpen =
+    document.getElementById("volumeModal").style.display === "flex";
+
+  if(!modalOpen){
+    return;
+  }
+
+  if(e.key === "Enter"){
+    confirmAddItem();
+  }
+
+  if(e.key === "Escape"){
+    closeVolumeModal();
+  }
+
+});
+
+</script>
+
+<div class="modal-overlay" id="volumeModal">
+  <div class="modal-card">
+
+    <h2 id="modalDesignator">Designator</h2>
+    <p id="modalUraian">Uraian pekerjaan</p>
+
+    <label>Volume</label>
+
+    <div class="volume-control">
+      <button onclick="kurangVolume()">-</button>
+      <input
+        type="number"
+        id="modalVolume"
+        value="1"
+        min="1"
+        oninput="updateModalPreview()"
+      >
+      <button onclick="tambahVolume()">+</button>
+    </div>
+
+    <div class="option-grid">
+    
+      <div
+        id="materialOptionCard"
+        class="option-card active"
+        onclick="toggleOption('material')"
+      >
+        <div class="option-card-title">Material</div>
+        <small id="materialOptionDesc">Uraian material</small>
+        <div class="option-badge" id="materialOptionBadge">Dipilih</div>
+      </div>
+
+      <div
+        id="jasaOptionCard"
+        class="option-card active"
+        onclick="toggleOption('jasa')"
+      >
+        <div class="option-card-title">Jasa</div>
+        <small id="jasaOptionDesc">Uraian jasa</small>
+        <div class="option-badge" id="jasaOptionBadge">Dipilih</div>
+      </div>
+
+    </div>
+
+    <div class="item-summary">
+      <div class="item-summary-title">Yang akan ditambahkan</div>
+      <div id="modalItemPreview"></div>
+    </div>
+
+    <div class="total-preview">
+      <div class="total-preview-line">
+        <span>Total Material</span>
+        <b id="modalTotalMaterial">Rp 0</b>
+      </div>
+
+      <div class="total-preview-line">
+        <span>Total Jasa</span>
+        <b id="modalTotalJasa">Rp 0</b>
+      </div>
+
+      <div class="total-preview-line grand">
+        <span>Estimasi Total</span>
+        <b id="modalGrandTotal">Rp 0</b>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeVolumeModal()">Batal</button>
+      <button class="btn-add" id="btnConfirmAdd" onclick="confirmAddItem()">
+        Tambahkan
+      </button>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
