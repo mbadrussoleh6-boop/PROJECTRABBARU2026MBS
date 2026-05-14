@@ -309,65 +309,131 @@
       transform: none;
     }
 
-    /* BOTTOM TOTALS */
-    .bottom-total {
+    /* ========================================= */
+    /* GAYA INVOICE SUMMARY (LEBIH ELEGAN & RAPI)*/
+    /* ========================================= */
+    
+    .bottom-area {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
       margin-top: 24px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr) 280px;
-      gap: 16px;
-      align-items: stretch;
+      gap: 24px;
     }
 
-    .total-card {
+    .save-message {
+      display: none;
+      flex: 1;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .save-message.success {
+      display: block;
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .save-message.error {
+      display: block;
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .invoice-summary {
       background: #ffffff;
-      padding: 20px 24px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 8px;
-      border-radius: 12px;
-      border: 1px solid #e2e8f0;
-      border-top: 4px solid #cbd5e1; 
+      border: 1px solid #cbd5e1;
+      border-radius: 8px; /* Lebih kotak, kesan formal */
+      padding: 24px;
+      width: 100%;
+      max-width: 420px;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
 
-    .total-card:nth-child(1) { border-top-color: #3b82f6; } /* Material */
-    .total-card:nth-child(2) { border-top-color: #10b981; } /* Jasa */
-    .total-card:nth-child(3) { border-top-color: #f59e0b; } /* Transpor */
-
-    .total-card span {
-      color: #64748b;
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      font-size: 14px;
+      color: #475569;
     }
 
-    .total-card b {
-      font-size: 20px;
+    .summary-value {
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
       color: #0f172a;
     }
 
-    .grand-card {
-      background: #1e293b;
-      border-top-color: #1e293b;
-      border: none;
+    .summary-row.grand-total-row {
+      margin-top: 12px;
+      padding-top: 16px;
+      border-top: 1px dashed #94a3b8; /* Garis putus-putus khas nota */
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
     }
 
-    .grand-card span {
-      color: #94a3b8;
+    .summary-row.grand-total-row .summary-value {
+      color: #1e3a8a; /* Warna navy sesuai header tabel Anda */
+      font-size: 18px;
     }
 
-    .grand-card b {
+    .summary-action {
+      margin-top: 24px;
+    }
+
+    .summary-action .btn-save-rab {
+      width: 100%;
+      background: #1e3a8a; /* Warna navy elegan */
       color: #ffffff;
+      padding: 14px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(30, 58, 138, 0.2);
+      transition: all 0.2s ease;
+      letter-spacing: 0.02em;
     }
 
-    .save-panel {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 8px;
+    .summary-action .btn-save-rab:hover {
+      background: #172554;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(30, 58, 138, 0.3);
+    }
+
+    .summary-action .btn-save-rab:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .summary-action .save-note {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    /* RESPONSIVE UNTUK SUMMARY */
+    @media(max-width: 768px) {
+      .bottom-area {
+        flex-direction: column-reverse; /* Pesan alert pindah ke bawah di HP */
+      }
+      .invoice-summary {
+        max-width: 100%;
+      }
+      .save-message {
+        width: 100%;
+      }
     }
 
     .save-note {
@@ -793,35 +859,30 @@
 
   </div>
 
-  <div class="bottom-total">
+  <div class="bottom-area">
+    
+    <div id="saveMessage" class="save-message"></div>
 
-    <div class="total-card">
-      <span>Total Material</span>
-      <b id="grandMaterial">Rp 0</b>
-    </div>
+    <div class="invoice-summary">
+      <div class="summary-row">
+        <span class="summary-label">Total Material</span>
+        <span class="summary-value" id="grandMaterial">Rp 0</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Total Jasa</span>
+        <span class="summary-value" id="grandJasa">Rp 0</span>
+      </div>
+      
+      <div class="summary-row grand-total-row">
+        <span class="summary-label">Total RAB</span>
+        <span class="summary-value" id="grandTotal">Rp 0</span>
+      </div>
 
-    <div class="total-card">
-      <span>Total Jasa</span>
-      <b id="grandJasa">Rp 0</b>
-    </div>
-
-    <div class="total-card grand-card">
-      <span>Total RAB</span>
-      <b id="grandTotal">Rp 0</b>
-    </div>
-
-    <div class="save-panel">
-      <button
-        type="button"
-        id="btnSaveRab"
-        class="btn-save-rab"
-        onclick="saveRab()"
-      >
-        Simpan RAB
-      </button>
-
-      <div class="save-note">
-        ID RAB dibuat otomatis
+      <div class="summary-action">
+        <button type="button" id="btnSaveRab" class="btn-save-rab" onclick="saveRab()">
+          Simpan RAB
+        </button>
+        <div class="save-note">ID RAB dibuat otomatis oleh sistem</div>
       </div>
     </div>
 
