@@ -1,1777 +1,708 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem RAB Maintenance</title>
+  
+  <!-- Font & CSS Bootstrap -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  
+  <!-- Select2 CSS & Bootstrap 5 Theme -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-      background: #f1f5f9; 
-      color: #0f172a;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-
-    /* HEADER */
-    .header {
-      background: #1e293b;
-      color: #f8fafc;
-      padding: 24px 32px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      margin-bottom: 32px;
-    }
-
-    .header h1 {
-      margin: 0;
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      max-width: 1400px;
-      margin: 0 auto;
-      color: #ffffff;
-    }
-
-    .container {
-      padding: 0 24px 40px;
-      max-width: 1400px;
-      margin: auto;
-    }
-
-    /* CARD STYLE */
-    .search-box, .table-card, .project-card, .save-panel {
-      background: #ffffff;
-      border-radius: 12px;
-      border: 1px solid #cbd5e1;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-      overflow: hidden; /* Memastikan tabel tidak keluar dari sudut membulat */
-    }
-
-    .search-box {
-      padding: 24px;
-      margin-bottom: 24px;
-    }
-
-    .project-card {
-      padding: 24px;
-      margin-bottom: 24px;
-      display: grid;
-      grid-template-columns: 1fr;
-    }
-
-    /* INPUT STYLE */
-    .search-input, .project-info input {
-      width: 100%;
-      padding: 14px 16px;
-      font-size: 15px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
-      background: #f8fafc;
-      color: #0f172a;
-      outline: none;
-      transition: all 0.2s ease;
-    }
-
-    .search-input:focus, .project-info input:focus {
-      background: #ffffff;
-      border-color: #4f46e5;
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-    }
-
-    .search-input::placeholder, .project-info input::placeholder {
-      color: #94a3b8;
-    }
-
-    .project-info label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: #475569;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .project-helper {
-      margin-top: 8px;
-      font-size: 13px;
-      color: #64748b;
-    }
-
-    /* SEARCH RESULTS */
-    .result-list {
-      margin-top: 16px;
-      display: grid;
-      gap: 12px;
-      max-height: 400px;
-      overflow: auto;
-    }
-
-    .item-card {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .item-card:hover {
-      border-color: #4f46e5;
-      background: #f5f8ff;
-      box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.08);
-    }
-
-    .designator {
-      font-size: 15px;
-      font-weight: 600;
-      color: #1e293b;
-    }
-
-    .uraian {
-      margin-top: 6px;
-      color: #475569;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .price {
-      margin-top: 12px;
-      display: flex;
-      gap: 24px;
-      font-size: 13px;
-      color: #64748b;
-      font-weight: 500;
-    }
-
-    /* ========================================= */
-    /* GAYA TABEL BARU (SESUAI GAMBAR REFERENSI) */
-    /* ========================================= */
+    html { font-size: 13px; } /* Normalnya 16px. Menurunkan ke 13px setara dengan efek zoom out ~80% */
+    body { font-family: 'Inter', sans-serif; background-color: #f4f7f6; color: #2b3445; }
+    .bg-corporate { background-color: #e31e24 !important; }
+    .text-corporate { color: #e31e24 !important; }
+    .btn-corporate { background-color: #e31e24; border-color: #e31e24; color: white; }
+    .btn-corporate:hover { background-color: #c7171e; border-color: #c7171e; color: white; }
     
-    .table-toolbar {
-      padding: 20px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #cbd5e1;
-      background: #ffffff;
-    }
-
-    .table-toolbar h2 {
-      margin: 0;
-      font-size: 16px;
-      font-weight: 600;
-      color: #0f172a;
-    }
-
-    .table-toolbar p {
-      margin: 4px 0 0;
-      color: #64748b;
-      font-size: 13px;
-    }
-
-    .table-count {
-      background: #e0e7ff;
-      color: #4338ca;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .table-scroll {
-      width: 100%;
-      overflow: auto;
-    }
-
-    .rab-table {
-      width: 100%;
-      border-collapse: collapse; /* Penting untuk menggabungkan garis border */
-      min-width: 980px;
-    }
-
-    .rab-table thead th {
-      background: #1e3a8a; /* Warna biru gelap (Navy) sesuai gambar */
-      color: #ffffff;
-      padding: 12px 16px;
-      text-align: center; /* Teks header dibuat ke tengah */
-      font-size: 13px;
-      font-weight: 600;
-      border: 1px solid rgba(255, 255, 255, 0.25); /* Garis vertikal putih transparan di header */
-      white-space: nowrap;
-    }
-
-    .rab-table tbody td {
-      padding: 12px 16px;
-      border: 1px solid #cbd5e1; /* Garis grid untuk semua sisi (kiri, kanan, atas, bawah) */
-      font-size: 14px;
-      color: #334155;
-      vertical-align: middle;
-      line-height: 1.5;
-    }
-
-    /* Efek Zebra Striping (Belang-belang) */
-    .rab-table tbody tr:nth-child(odd) {
-      background: #ffffff; /* Baris ganjil putih */
-    }
-
-    .rab-table tbody tr:nth-child(even) {
-      background: #f1f5f9; /* Baris genap abu-abu kebiruan muda */
-    }
-
-    .rab-table tbody tr:hover {
-      background: #e2e8f0; /* Warna highlight saat disorot mouse */
-    }
-
-    /* Penyesuaian perataan teks per kolom */
-    .rab-table td:nth-child(1) { text-align: center; font-weight: 600; color: #0f172a; } /* Designator */
-    .rab-table td:nth-child(2) { text-align: left; min-width: 320px; } /* Uraian Pekerjaan */
-    .rab-table td:nth-child(3) { text-align: center; color: #475569; } /* Satuan */
+    .card { border: none; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04); margin-bottom: 24px; }
+    .card-header { background-color: #ffffff; border-bottom: 1px solid #edf2f9; padding: 1rem 1.5rem; border-radius: 12px 12px 0 0 !important; }
+    .card-header-title { font-weight: 600; margin: 0; font-size: 1.1rem; }
     
-    .rab-table td:nth-child(4), /* Harga Material */
-    .rab-table td:nth-child(5), /* Harga Jasa */
-    .rab-table td:nth-child(7) { /* Jumlah Harga */
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
-
-    .rab-table td:nth-child(6) { text-align: center; } /* Kolom Input Volume */
-    .rab-table td:last-child { text-align: center; } /* Kolom Tombol Aksi */
-
-    .right {
-      text-align: right;
-    }
-
-    .volume-input {
-      width: 72px;
-      padding: 8px;
-      border-radius: 4px; /* Dibuat sedikit lebih kotak agar cocok dengan tabel grid */
-      border: 1px solid #94a3b8;
-      background: #ffffff;
-      color: #0f172a;
-      font-weight: 600;
-      text-align: center;
-      outline: none;
-      transition: 0.2s;
-    }
-
-    .volume-input:focus {
-      border-color: #4f46e5;
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-    }
-
-    /* BUTTONS */
-    .btn-delete {
-      background: #ffffff;
-      color: #ef4444;
-      border: 1px solid #fecaca;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 500;
-      font-size: 13px;
-      transition: 0.2s;
-    }
-
-    .btn-delete:hover {
-      background: #fef2f2;
-      border-color: #ef4444;
-    }
-
-    .btn-save-rab {
-      background: #4f46e5;
-      color: #ffffff;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
-      transition: 0.2s;
-      width: 100%;
-    }
-
-    .btn-save-rab:hover {
-      background: #4338ca;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 8px -1px rgba(79, 70, 229, 0.25);
-    }
-
-    .btn-save-rab:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* ========================================= */
-    /* GAYA INVOICE SUMMARY (LEBIH ELEGAN & RAPI)*/
-    /* ========================================= */
+    .form-label { font-weight: 600; font-size: 0.8rem; color: #6e7787; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.5px;}
+    .form-control { border-radius: 6px; padding: 0.4rem 0.75rem; } /* Membuat kotak input sedikit lebih pipih */
+    .select2-container { border-radius: 6px; }
+    .form-control:read-only { background-color: #f8f9fa; color: #6e7787; border: 1px solid #edf2f9; }
     
-    .bottom-area {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-top: 24px;
-      gap: 24px;
-    }
+    .table-container { border-radius: 8px; overflow: hidden; border: 1px solid #edf2f9; }
+    .table { margin-bottom: 0; }
+    .table thead th { background-color: #f8f9fa; color: #495057; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; border-bottom: 2px solid #edf2f9; padding: 0.6rem 0.75rem; }
+    .table tbody td { padding: 0.5rem 0.75rem; vertical-align: middle; border-bottom: 1px solid #edf2f9; font-size: 0.95rem;}
+    
+    .hidden { display: none !important; }
+    #loader { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 0; }
 
-    .save-message {
-      display: none;
-      flex: 1;
-      padding: 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      line-height: 1.5;
+    /* Kustomisasi Tampilan Select2 agar sesuai tema */
+    .select2-container--bootstrap-5 .select2-selection { font-size: 0.95rem; padding: 0.375rem 0.75rem; border: 1px solid #dce0e5; }
+    /* Mengubah fokus form menjadi warna slate/navy yang elegan */
+    .form-control:focus, .select2-container--bootstrap-5.select2-container--focus .select2-selection { 
+      border-color: #475569; 
+      box-shadow: 0 0 0 0.2rem rgba(71, 85, 105, 0.15); 
     }
-
-    .save-message.success {
-      display: block;
-      background: #f0fdf4;
-      color: #166534;
-      border: 1px solid #bbf7d0;
+    .select2-results__option { font-size: 0.9rem; }
+    /* Memperpanjang tinggi maksimal kotak hasil pencarian Select2 */
+    .select2-container .select2-results__options {
+      max-height: 450px !important; /* Kamu bisa menambah/mengurangi angka ini sesuai selera (contoh: 400px atau 500px) */
     }
-
-    .save-message.error {
-      display: block;
-      background: #fef2f2;
-      color: #991b1b;
-      border: 1px solid #fecaca;
+    .designator-code { font-weight: bold; color: #e31e24; display: block; font-size: 0.85rem; margin-bottom: 2px;}
+    .designator-desc { color: #495057; font-size: 0.85rem; white-space: normal;}
+    
+    /* Efek highlight untuk teks yang dicari */
+    .highlight-text { 
+      background-color: #ffeb3b; /* Warna kuning stabilo */
+      color: #000 !important; 
+      font-weight: bold; 
+      padding: 0 2px; 
+      border-radius: 3px; 
     }
-
-    .invoice-summary {
-      background: #ffffff;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px; /* Lebih kotak, kesan formal */
-      padding: 24px;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    #inputNamaPekerjaan::placeholder {
+      font-weight: normal;
+      color: #adb5bd;
+      font-style: italic;
     }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 0;
-      font-size: 14px;
-      color: #475569;
+    
+    #inputNamaPekerjaan:focus {
+      background-color: transparent;
+      border-bottom: 1px solid #dee2e6 !important;
+      border-radius: 0;
     }
-
-    .summary-value {
-      font-weight: 600;
-      font-variant-numeric: tabular-nums;
-      color: #0f172a;
-    }
-
-    .summary-row.grand-total-row {
-      margin-top: 12px;
-      padding-top: 16px;
-      border-top: 1px dashed #94a3b8; /* Garis putus-putus khas nota */
-      font-size: 16px;
-      font-weight: 700;
-      color: #0f172a;
-    }
-
-    .summary-row.grand-total-row .summary-value {
-      color: #1e3a8a; /* Warna navy sesuai header tabel Anda */
-      font-size: 18px;
-    }
-
-    .summary-action {
-      margin-top: 24px;
-    }
-
-    .summary-action .btn-save-rab {
-      width: 100%;
-      background: #1e3a8a; /* Warna navy elegan */
-      color: #ffffff;
-      padding: 14px;
-      font-size: 14px;
-      border-radius: 6px;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(30, 58, 138, 0.2);
-      transition: all 0.2s ease;
-      letter-spacing: 0.02em;
-    }
-
-    .summary-action .btn-save-rab:hover {
-      background: #172554;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 6px rgba(30, 58, 138, 0.3);
-    }
-
-    .summary-action .btn-save-rab:disabled {
-      background: #94a3b8;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    .summary-action .save-note {
-      text-align: center;
-      margin-top: 10px;
-      font-size: 12px;
-      color: #64748b;
-    }
-
-    /* RESPONSIVE UNTUK SUMMARY */
-    @media(max-width: 768px) {
-      .bottom-area {
-        flex-direction: column-reverse; /* Pesan alert pindah ke bawah di HP */
-      }
-      .invoice-summary {
-        max-width: 100%;
-      }
-      .save-message {
-        width: 100%;
-      }
-    }
-
-    .save-note {
-      font-size: 12px;
-      color: #64748b;
-      text-align: center;
-    }
-
-    /* MODAL OVERLAY */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.6); 
-      backdrop-filter: blur(4px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-
-    .modal-card {
-      background: #ffffff;
-      width: 100%;
-      max-width: 480px;
-      border-radius: 16px;
-      padding: 32px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-      animation: pop 0.2s ease-out;
-    }
-
-    .modal-card h2 {
-      margin: 0;
-      color: #0f172a;
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .modal-card p {
-      color: #475569;
-      font-size: 14px;
-      line-height: 1.5;
-      margin: 8px 0 24px;
-    }
-
-    .modal-card label {
-      font-weight: 600;
-      display: block;
-      margin-bottom: 12px;
-      color: #334155;
-      font-size: 14px;
-    }
-
-    .volume-control {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-
-    .volume-control button {
-      width: 44px;
-      height: 44px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      background: #f8fafc;
-      color: #0f172a;
-      font-size: 20px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .volume-control button:hover {
-      background: #e2e8f0;
-    }
-
-    .volume-control input {
-      flex: 1;
-      height: 44px;
-      text-align: center;
-      font-size: 18px;
-      font-weight: 600;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      outline: none;
-      color: #0f172a;
-      background: #f8fafc;
-    }
-
-    .volume-control input:focus {
-      background: #ffffff;
-      border-color: #4f46e5;
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-    }
-
-    /* OPTION CARDS */
-    .option-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .option-card {
-      border: 1px solid #cbd5e1;
-      background: #f8fafc;
-      border-radius: 12px;
-      padding: 16px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .option-card:hover {
-      border-color: #94a3b8;
-      background: #ffffff;
-    }
-
-    .option-card.active {
-      border-color: #4f46e5;
-      background: #eef2ff;
-      border-width: 2px;
-      padding: 15px; 
-    }
-
-    .option-card.disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      background: #f1f5f9;
-    }
-
-    .option-card-title {
-      font-weight: 600;
-      color: #0f172a;
-      margin-bottom: 6px;
-      font-size: 14px;
-    }
-
-    .option-card.active .option-card-title {
-      color: #4338ca;
-    }
-
-    .option-card small {
-      color: #64748b;
-      line-height: 1.4;
-      display: block;
-    }
-
-    .option-badge {
-      margin-top: 12px;
-      display: inline-block;
-      padding: 4px 8px;
+    /* Styling khusus untuk input edit volume di dalam tabel */
+    .input-volume-inline {
+      width: 70px;
+      background-color: transparent;
+      border: 1px dashed #ced4da; /* Garis putus-putus tipis penanda bisa diedit */
       border-radius: 4px;
-      font-size: 11px;
-      font-weight: 600;
-      background: #e2e8f0;
-      color: #475569;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      transition: all 0.2s;
     }
-
-    .option-card.active .option-badge {
-      background: #4f46e5;
-      color: white;
+    .input-volume-inline:focus {
+      background-color: #ffffff;
+      border: 1px solid #e31e24 !important;
+      outline: none;
+      box-shadow: 0 0 5px rgba(227, 30, 36, 0.2);
     }
-
-    .item-summary {
-      margin-top: 24px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 16px;
-    }
-
-    .item-summary-title {
-      font-size: 12px;
-      font-weight: 600;
-      color: #64748b;
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .item-row-preview {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    .item-row-preview:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    .item-row-preview b {
-      color: #0f172a;
-      font-size: 14px;
-    }
-
-    .item-row-preview small {
-      display: block;
-      color: #64748b;
-      margin-top: 4px;
-    }
-
-    .total-preview {
-      margin-top: 24px;
-      background: #f1f5f9;
-      border: 1px solid #cbd5e1;
-      color: #0f172a;
-      border-radius: 12px;
-      padding: 20px;
-    }
-
-    .total-preview-line {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      font-size: 14px;
-      color: #475569;
-    }
-
-    .total-preview-line.grand {
-      border-top: 1px solid #cbd5e1;
-      padding-top: 12px;
-      margin-top: 12px;
-      margin-bottom: 0;
-      font-size: 16px;
-      font-weight: 700;
-      color: #0f172a;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 32px;
-    }
-
-    .modal-actions button {
-      flex: 1;
-      border: none;
-      padding: 14px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .btn-cancel {
-      background: #ffffff;
-      color: #334155;
-      border: 1px solid #cbd5e1 !important;
-    }
-
-    .btn-cancel:hover {
-      background: #f1f5f9;
-      border-color: #94a3b8 !important;
-    }
-
-    .btn-add {
-      background: #4f46e5;
-      color: white;
-    }
-
-    .btn-add:hover {
-      background: #4338ca;
-    }
-
-    @keyframes pop {
-      from { transform: scale(0.97); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .price-nominal {
-      color: #0f172a;
-      font-weight: 600;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .price-zero {
-      color: #94a3b8;
-      font-weight: 400;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .save-message {
-      display: none;
-      margin-top: 24px;
-      padding: 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      text-align: center;
-    }
-
-    .save-message.success {
-      display: block;
-      background: #f0fdf4;
-      color: #166534;
-      border: 1px solid #bbf7d0;
-    }
-
-    .save-message.error {
-      display: block;
-      background: #fef2f2;
-      color: #991b1b;
-      border: 1px solid #fecaca;
-    }
-
-    /* RESPONSIVE ADJUSTMENTS */
-    @media(max-width: 1024px) {
-      .bottom-total {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .save-panel {
-        grid-column: span 2;
-      }
-    }
-
-    @media(max-width: 768px) {
-      .bottom-total {
-        grid-template-columns: 1fr;
-      }
-      .save-panel {
-        grid-column: span 1;
-      }
-      .table-toolbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-      }
-      .option-grid {
-        grid-template-columns: 1fr;
-      }
-      .container {
-        padding: 0 16px 24px;
-      }
-      .header {
-        padding: 20px 16px;
-      }
-    }
-
-    /* ========================================= */
-    /* GAYA TFOOT TABEL (TOTAL RAB)              */
-    /* ========================================= */
-    .rab-tfoot td {
-      padding: 12px 16px;
-      border: 1px solid #cbd5e1;
-      background: #ffffff;
-    }
-
-    .rab-tfoot .summary-label {
-      font-weight: 600;
-      color: #475569;
-    }
-
-    .rab-tfoot .summary-value {
-      font-weight: 600;
-      font-variant-numeric: tabular-nums;
-      color: #0f172a;
-    }
-
-    .rab-tfoot .grand-total-row td {
-      border-top: 2px dashed #94a3b8; /* Garis putus-putus seperti nota */
-      background: #f8fafc;
-    }
-
-    .rab-tfoot .grand-total-row .summary-label {
-      font-size: 15px;
-      font-weight: 700;
-      color: #0f172a;
-    }
-
-    .rab-tfoot .grand-total-row .summary-value {
-      color: #1e3a8a; /* Warna navy sesuai dengan header tabel */
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    /* Penyesuaian area tombol simpan agar ke kanan */
-    .action-area {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      margin-top: 24px;
-      width: 100%;
-    }
-
-    .action-area .btn-save-rab {
-      width: auto;
-      min-width: 200px;
-    }
-
   </style>
 </head>
-
 <body>
 
-<div class="header">
-  <h1>RAB Generator</h1>
-</div>
-
-<div class="container">
-
-  <div class="project-card">
-
-    <div class="project-info">
-      <label>Nama Pekerjaan</label>
-
-      <input
-        type="text"
-        id="namaPekerjaan"
-        placeholder="Contoh: Pemasangan Akses Internet STO Surabaya"
-      >
-
-      <div class="project-helper">
-        Nama pekerjaan akan ikut tersimpan bersama detail RAB.
-      </div>
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark bg-corporate shadow-sm mb-4 py-3">
+    <div class="container-fluid px-4">
+      <span class="navbar-brand mb-0 h1 fw-bold d-flex align-items-center gap-2">
+        <i class="bi bi-tools"></i> 
+        Sistem Pembuatan RAB Maintenance
+      </span>
+      <span class="text-white opacity-75 small"><i class="bi bi-clock-history"></i> KHS TA - TIF 2026</span>
     </div>
+  </nav>
 
-  </div>
-
-  <div class="search-box">
-
-    <input
-      type="text"
-      id="searchInput"
-      class="search-input"
-      placeholder="🔍 Cari Designator atau Uraian..."
-      onkeyup="searchItem()"
-    >
-
-    <div class="result-list" id="resultList"></div>
-
-  </div>
-
-  <div class="table-card">
-
-    <div class="table-toolbar">
-      <div>
-        <h2>Daftar RAB</h2>
-        <p>Item pekerjaan yang sudah dipilih</p>
-      </div>
-
-      <div class="table-count" id="itemCount">
-        0 Item
-      </div>
-    </div>
-
-    <div class="table-scroll">
+  <div class="container-fluid px-4 pb-5">
     
-      <table class="rab-table">
+    <!-- Loading Screen -->
+    <div id="loader">
+      <div class="spinner-border text-corporate mb-3" role="status" style="width: 3rem; height: 3rem;"></div>
+      <h5 class="text-muted fw-normal">Menghubungkan ke Database KHS...</h5>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div class="row hidden" id="mainDashboard">
       
-        <thead>
-          <tr>
-            <th>Designator</th>
-            <th>Uraian</th>
-            <th>Satuan</th>
-            <th>Harga Material</th>
-            <th>Harga Jasa</th>
-            <th>Volume</th>
-            <th>Total</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-
-        <tbody id="tbodyRab"></tbody>
-
-        <tfoot class="rab-tfoot">
-          <tr>
-            <td colspan="6" class="right summary-label">Total Material</td>
-            <td class="right summary-value" id="grandMaterial">Rp 0</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td colspan="6" class="right summary-label">Total Jasa</td>
-            <td class="right summary-value" id="grandJasa">Rp 0</td>
-            <td></td>
-          </tr>
-          <tr class="grand-total-row">
-            <td colspan="6" class="right summary-label">Total RAB</td>
-            <td class="right summary-value" id="grandTotal">Rp 0</td>
-            <td></td>
-          </tr>
-        </tfoot>
-
-      </table>
-
-    </div>
-
-  </div>
-
-  <div class="bottom-area">
-    
-    <div id="saveMessage" class="save-message"></div>
-
-    <div class="action-area">
-      <div class="summary-action">
-        <button type="button" id="btnSaveRab" class="btn-save-rab" onclick="saveRab()">
-          Simpan RAB
-        </button>
-        <div class="save-note">ID RAB dibuat otomatis oleh sistem</div>
+      <!-- Panel Kiri: Form Input -->
+      <div class="col-lg-4">
+        <div class="card h-100">
+          <div class="card-header">
+            <h5 class="card-header-title"><i class="bi bi-plus-square-fill text-secondary me-2"></i> Form Input Lapangan</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label text-corporate"><i class="bi bi-search me-1"></i> Cari Designator / Uraian</label>
+              <select class="form-select" id="inputSearch" style="width: 100%;">
+                <option></option>
+              </select>
+            </div>
+            
+            <div class="text-center mt-4 p-3 bg-light rounded border border-dashed">
+              <i class="bi bi-hand-index-thumb fs-1 text-secondary mb-2 d-block"></i>
+              <p class="small text-muted mb-0">Pilih item dari pencarian di atas. Pop-up pengaturan Material & Jasa akan otomatis muncul.</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
 
+      <!-- Panel Kanan: Tabel RAB -->
+      <div class="col-lg-8">
+        <div class="card" id="areaTabelRAB"> <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-header-title"><i class="bi bi-table text-secondary me-2"></i> Rincian Draft RAB</h5>
+            
+            <div class="d-flex gap-2" data-html2canvas-ignore="true"> 
+              <button class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1" id="btnCopyGambar" onclick="copyTableToClipboard()">
+                <i class="bi bi-clipboard"></i> Copy Gambar
+              </button>
+              <button class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1" id="btnDownloadGambar" onclick="downloadTableAsImage()">
+                <i class="bi bi-download"></i> Download
+              </button>
+            </div>
+            
+          </div>
+          <div class="card-body p-0">
+            <div class="px-3 py-3 border-bottom bg-light">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <label class="fw-bold text-secondary mb-0" style="font-size: 0.75rem; letter-spacing: 1px;">NAMA PEKERJAAN :</label>
+                </div>
+                <div class="col">
+                  <input type="text" id="inputNamaPekerjaan" 
+                         class="form-control form-control-sm border-0 bg-transparent fw-bold text-dark p-0" 
+                         placeholder="Klik di sini untuk mengisi nama pekerjaan (Contoh: Maintenance Link A)..." 
+                         style="font-size: 1rem; outline: none; box-shadow: none;">
+                </div>
+              </div>
+            </div>
+
+            <div class="table-responsive table-container m-3 mt-3">
+              <table class="table table-hover align-middle">
+                <thead>
+                  <tr>
+                    <th style="width: 15%;">Designator</th>
+                    <th style="width: 30%;">Uraian</th>
+                    <th class="text-center">Vol</th>
+                    <th class="text-center">Sat</th>
+                    <th class="text-end">Total Material</th>
+                    <th class="text-end">Total Jasa</th>
+                    <th class="text-end">Subtotal</th>
+                    <th class="text-center" style="width: 5%;"><i class="bi bi-gear"></i></th>
+                  </tr>
+                </thead>
+                <tbody id="bodyRAB">
+                  <tr>
+                    <td colspan="8" class="text-center py-5 text-muted">
+                      <i class="bi bi-inbox fs-2 d-block mb-2 text-light"></i>
+                      Belum ada data pekerjaan yang ditambahkan.
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot id="tfootRAB" class="hidden">
+                  <tr class="table-light">
+                    <td colspan="4" class="text-end fw-bold text-uppercase">Total Keseluruhan</td>
+                    <td id="grandMaterial" class="text-end fw-bold text-muted">Rp 0</td>
+                    <td id="grandJasa" class="text-end fw-bold text-muted">Rp 0</td>
+                    <td id="grandTotal" class="text-end fw-bold fs-5 text-dark">Rp 0</td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <div id="saveMessage" class="save-message"></div>
+  <!-- jQuery & Select2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-</div>
+  <script>
+    let dataKatalog = [];
+    let itemRAB = [];
+    let itemDraftSementara = null;
+    let modalInstance = null;
 
-<script>
+    // 1. Ambil data saat web dimuat
+    window.onload = function() {
+      google.script.run.withSuccessHandler(siapkanForm).getKatalogData();
+    };
 
-let masterData = [];
-let rabItems = [];
-let currentSearchGroups = [];
+    // 2. Fungsi memproses data KHS & Menyimpan Urutan (Index)
+    function siapkanForm(data) {
+      let groupedMap = {};
 
-window.onload = function(){
+      data.forEach((item, index) => { // <-- Menyimpan urutan baris asli
+        let baseDesignator = item.designator.replace(/^(M-|J-)/i, '').trim();
 
-  google.script.run
-    .withSuccessHandler(function(data){
+        if (!groupedMap[baseDesignator]) {
+          groupedMap[baseDesignator] = {
+            designator: baseDesignator,
+            uraian: item.uraian,
+            satuan: item.satuan,
+            hargaMaterial: 0,
+            hargaJasa: 0,
+            originalIndex: index // <-- Disimpan di sini
+          };
+        }
 
-      masterData = data;
+        if (item.designator.match(/^M-/i) || item.hargaMaterial > 0) {
+          groupedMap[baseDesignator].hargaMaterial += item.hargaMaterial;
+        }
+        if (item.designator.match(/^J-/i) || item.hargaJasa > 0) {
+          groupedMap[baseDesignator].hargaJasa += item.hargaJasa;
+        }
+      });
 
-    })
-    .getMasterData();
+      dataKatalog = Object.values(groupedMap);
+      const selectElem = $('#inputSearch');
+      
+      dataKatalog.forEach(item => {
+        let textGabungan = item.designator + ' - ' + item.uraian;
+        let option = new Option(textGabungan, item.designator, false, false);
+        $(option).attr('data-uraian', item.uraian);
+        selectElem.append(option);
+      });
+      
+      selectElem.select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Ketik designator atau uraian...',
+        allowClear: true,
+        templateResult: formatDropdownDesignator
+      });
 
-};
-
-function getBaseDesignator(designator){
-
-  return String(designator || "")
-    .replace(/^M-/i, "")
-    .replace(/^J-/i, "");
-
-}
-
-function getJenisDesignator(designator){
-
-  if(String(designator).startsWith("M-")){
-    return "material";
-  }
-
-  if(String(designator).startsWith("J-")){
-    return "jasa";
-  }
-
-  return "lain";
-
-}
-
-function buildDesignatorGroups(){
-
-  const groups = {};
-
-  masterData.forEach(item => {
-
-    const base = getBaseDesignator(item.designator);
-    const jenis = getJenisDesignator(item.designator);
-
-    if(!groups[base]){
-      groups[base] = {
-        base: base,
-        material: null,
-        jasa: null,
-        lain: [],
-        urutan: item.urutan,
-        uraian: item.uraian
-      };
+      document.getElementById('loader').classList.add('hidden');
+      document.getElementById('mainDashboard').classList.remove('hidden');
     }
 
-    if(jenis === "material"){
-      groups[base].material = item;
-    }
+    // 3. Fungsi Kustom Tampilan Dropdown Select2
+    function formatDropdownDesignator(item) {
+      if (!item.id) { return item.text; } 
+      let uraian = $(item.element).attr('data-uraian');
+      let isTerpilih = item.disabled;
+      
+      let kataKunci = $('.select2-search__field').val() || '';
+      function highlightTeks(teks, cari) {
+        if (!cari) return teks; 
+        let regex = new RegExp("(" + cari.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ")", "gi");
+        return teks.replace(regex, "<span class='highlight-text'>$1</span>");
+      }
 
-    else if(jenis === "jasa"){
-      groups[base].jasa = item;
-    }
+      let labelStatus = isTerpilih ? '<span class="badge bg-secondary ms-2" style="font-size:0.65rem;">Sudah di RAB</span>' : '';
+      let opasitas = isTerpilih ? 'opacity: 0.4;' : '';
 
-    else{
-      groups[base].lain.push(item);
-    }
-
-    groups[base].urutan =
-      Math.min(groups[base].urutan, item.urutan);
-
-  });
-
-  return Object.values(groups)
-    .sort((a,b) => a.urutan - b.urutan);
-
-}
-
-function searchItem(){
-
-  const keyword = document
-    .getElementById("searchInput")
-    .value
-    .toLowerCase();
-
-  const resultList = document.getElementById("resultList");
-
-  resultList.innerHTML = "";
-
-  if(keyword.length < 2){
-    return;
-  }
-
-  const selectedDesignators =
-    rabItems.map(item => item.designator);
-
-  const groups = buildDesignatorGroups();
-
-  const filtered = groups.filter(group => {
-
-    const materialAvailable =
-      group.material &&
-      !selectedDesignators.includes(group.material.designator);
-
-    const jasaAvailable =
-      group.jasa &&
-      !selectedDesignators.includes(group.jasa.designator);
-
-    const lainAvailable =
-      group.lain.some(item =>
-        !selectedDesignators.includes(item.designator)
+      let $container = $(
+        '<div style="' + opasitas + '">' +
+          '<span class="designator-code">' + highlightTeks(item.id, kataKunci) + labelStatus + '</span>' +
+          '<span class="designator-desc">' + highlightTeks(uraian, kataKunci) + '</span>' +
+        '</div>'
       );
-
-    const masihAdaYangBisaDipilih =
-      materialAvailable || jasaAvailable || lainAvailable;
-
-    const matchKeyword =
-      group.base.toLowerCase().includes(keyword) ||
-      String(group.uraian || "").toLowerCase().includes(keyword) ||
-      String(group.material?.uraian || "").toLowerCase().includes(keyword) ||
-      String(group.jasa?.uraian || "").toLowerCase().includes(keyword);
-
-    return masihAdaYangBisaDipilih && matchKeyword;
-
-  }).slice(0,20);
-
-  currentSearchGroups = filtered;
-
-  filtered.forEach((group,index) => {
-
-    const hargaMaterial =
-      group.material ? group.material.hargaMaterial : 0;
-
-    const hargaJasa =
-      group.jasa ? group.jasa.hargaJasa : 0;
-
-    resultList.innerHTML += `
-
-      <div class="item-card" onclick="addGroupFromSearch(${index})">
-
-        <div class="designator">
-          ${group.base}
-        </div>
-
-        <div class="uraian">
-          ${group.uraian || ""}
-        </div>
-
-        <div class="price">
-          <div>Material : ${formatRupiah(hargaMaterial)}</div>
-          <div>Jasa : ${formatRupiah(hargaJasa)}</div>
-        </div>
-
-      </div>
-
-    `;
-
-  });
-
-}
-
-let selectedGroup = null;
-let includeMaterial = true;
-let includeJasa = true;
-
-function addGroupFromSearch(index){
-
-  const group = currentSearchGroups[index];
-
-  if(!group){
-    return;
-  }
-
-  openVolumeModal(group);
-
-}
-
-function toggleOption(type){
-
-  if(!selectedGroup){
-    return;
-  }
-
-  if(type === "material"){
-
-    if(!selectedGroup.material){
-      return;
+      return $container;
     }
 
-    includeMaterial = !includeMaterial;
+    // 4. Fungsi Mengunci Item yang Habis di Dropdown
+    function perbaruiStatusDropdown() {
+      $('#inputSearch option').each(function() {
+        let baseDesignator = $(this).val();
+        
+        if (baseDesignator) {
+          let itemKatalog = dataKatalog.find(k => k.designator === baseDesignator);
+          if(itemKatalog) {
+            let hasMat = itemKatalog.hargaMaterial > 0;
+            let hasJas = itemKatalog.hargaJasa > 0;
+            let usedMat = itemRAB.some(rab => rab.designator === 'M-' + baseDesignator);
+            let usedJas = itemRAB.some(rab => rab.designator === 'J-' + baseDesignator);
 
-  }
+            let matExhausted = !hasMat || usedMat; 
+            let jasExhausted = !hasJas || usedJas;
 
-  if(type === "jasa"){
-
-    if(!selectedGroup.jasa){
-      return;
+            if (matExhausted && jasExhausted) {
+              $(this).prop('disabled', true);
+            } else {
+              $(this).prop('disabled', false);
+            }
+          }
+        }
+      });
+      
+      $('#inputSearch').select2('destroy').select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Ketik designator atau uraian...',
+        allowClear: true,
+        templateResult: formatDropdownDesignator
+      });
     }
 
-    includeJasa = !includeJasa;
-
-  }
-
-  updateModalPreview();
-
-}
-
-function openVolumeModal(group){
-
-  selectedGroup = group;
-
-  const selectedDesignators =
-    rabItems.map(item => item.designator);
-
-  includeMaterial =
-    group.material &&
-    !selectedDesignators.includes(group.material.designator);
-
-  includeJasa =
-    group.jasa &&
-    !selectedDesignators.includes(group.jasa.designator);
-
-  document.getElementById("modalDesignator").innerText =
-    group.base;
-
-  document.getElementById("modalUraian").innerText =
-    group.uraian || "";
-
-  document.getElementById("modalVolume").value = 1;
-
-  updateOptionCards();
-
-  updateModalPreview();
-
-  document.getElementById("volumeModal").style.display = "flex";
-
-  setTimeout(() => {
-    document.getElementById("modalVolume").focus();
-    document.getElementById("modalVolume").select();
-  }, 100);
-
-}
-
-function updateOptionCards(){
-
-  if(!selectedGroup){
-    return;
-  }
-
-  const selectedDesignators =
-    rabItems.map(item => item.designator);
-
-  const materialCard =
-    document.getElementById("materialOptionCard");
-
-  const jasaCard =
-    document.getElementById("jasaOptionCard");
-
-  const materialDesc =
-    document.getElementById("materialOptionDesc");
-
-  const jasaDesc =
-    document.getElementById("jasaOptionDesc");
-
-  const materialBadge =
-    document.getElementById("materialOptionBadge");
-
-  const jasaBadge =
-    document.getElementById("jasaOptionBadge");
-
-  if(selectedGroup.material){
-
-    const sudahDipilih =
-      selectedDesignators.includes(selectedGroup.material.designator);
-
-    materialCard.style.display = "block";
-    materialDesc.innerText = selectedGroup.material.uraian;
-
-    if(sudahDipilih){
-      materialCard.className = "option-card disabled";
-      materialBadge.innerText = "Sudah dipilih";
-    }
-
-    else if(includeMaterial){
-      materialCard.className = "option-card active";
-      materialBadge.innerText = "Dipilih";
-    }
-
-    else{
-      materialCard.className = "option-card";
-      materialBadge.innerText = "Tidak dipilih";
-    }
-
-  } else {
-    materialCard.style.display = "none";
-  }
-
-  if(selectedGroup.jasa){
-
-    const sudahDipilih =
-      selectedDesignators.includes(selectedGroup.jasa.designator);
-
-    jasaCard.style.display = "block";
-    jasaDesc.innerText = selectedGroup.jasa.uraian;
-
-    if(sudahDipilih){
-      jasaCard.className = "option-card disabled";
-      jasaBadge.innerText = "Sudah dipilih";
-    }
-
-    else if(includeJasa){
-      jasaCard.className = "option-card active";
-      jasaBadge.innerText = "Dipilih";
-    }
-
-    else{
-      jasaCard.className = "option-card";
-      jasaBadge.innerText = "Tidak dipilih";
-    }
-
-  } else {
-    jasaCard.style.display = "none";
-  }
-
-}
-
-function updateModalPreview(){
-
-  if(!selectedGroup){
-    return;
-  }
-
-  const volume =
-    Number(document.getElementById("modalVolume").value) || 1;
-
-  const selectedDesignators =
-    rabItems.map(item => item.designator);
-
-  const previewItems = [];
-
-  if(
-    selectedGroup.material &&
-    includeMaterial &&
-    !selectedDesignators.includes(selectedGroup.material.designator)
-  ){
-    previewItems.push(selectedGroup.material);
-  }
-
-  if(
-    selectedGroup.jasa &&
-    includeJasa &&
-    !selectedDesignators.includes(selectedGroup.jasa.designator)
-  ){
-    previewItems.push(selectedGroup.jasa);
-  }
-
-  const previewBox =
-    document.getElementById("modalItemPreview");
-
-  previewBox.innerHTML = "";
-
-  let totalMaterial = 0;
-  let totalJasa = 0;
-
-  if(previewItems.length === 0){
-
-    previewBox.innerHTML = `
-      <div style="color:#ef4444;font-weight:bold;">
-        Pilih minimal Material atau Jasa
-      </div>
-    `;
-
-  }
-
-  previewItems.forEach(item => {
-
-    totalMaterial += item.hargaMaterial * volume;
-    totalJasa += item.hargaJasa * volume;
-
-    previewBox.innerHTML += `
-
-      <div class="item-row-preview">
-        <div>
-          <b>${item.designator}</b>
-          <small>${item.uraian}</small>
-        </div>
-        <div>
-          x ${volume}
-        </div>
-      </div>
-
-    `;
-
-  });
-
-  document.getElementById("modalTotalMaterial").innerText =
-    formatRupiah(totalMaterial);
-
-  document.getElementById("modalTotalJasa").innerText =
-    formatRupiah(totalJasa);
-
-  document.getElementById("modalGrandTotal").innerText =
-    formatRupiah(totalMaterial + totalJasa);
-
-  document.getElementById("btnConfirmAdd").innerText =
-    `Tambahkan ${previewItems.length} Item`;
-
-  updateOptionCards();
-
-}
-
-function closeVolumeModal(){
-
-  selectedGroup = null;
-  includeMaterial = true;
-  includeJasa = true;
-
-  document.getElementById("volumeModal").style.display = "none";
-
-}
-
-function kurangVolume(){
-
-  const input = document.getElementById("modalVolume");
-
-  let value = Number(input.value) || 1;
-
-  if(value > 1){
-    input.value = value - 1;
-  }
-
-  updateModalPreview();
-
-}
-
-function tambahVolume(){
-
-  const input = document.getElementById("modalVolume");
-
-  let value = Number(input.value) || 1;
-
-  input.value = value + 1;
-
-  updateModalPreview();
-
-}
-
-function confirmAddItem(){
-
-  const volume =
-    Number(document.getElementById("modalVolume").value);
-
-  if(!selectedGroup){
-    return;
-  }
-
-  if(!volume || volume <= 0){
-    alert("Volume harus lebih dari 0");
-    return;
-  }
-
-  const selectedDesignators =
-    rabItems.map(item => item.designator);
-
-  const itemsToAdd = [];
-
-  if(
-    selectedGroup.material &&
-    includeMaterial &&
-    !selectedDesignators.includes(selectedGroup.material.designator)
-  ){
-    itemsToAdd.push(selectedGroup.material);
-  }
-
-  if(
-    selectedGroup.jasa &&
-    includeJasa &&
-    !selectedDesignators.includes(selectedGroup.jasa.designator)
-  ){
-    itemsToAdd.push(selectedGroup.jasa);
-  }
-
-  if(itemsToAdd.length === 0){
-    alert("Pilih minimal Material atau Jasa");
-    return;
-  }
-
-  itemsToAdd.forEach(item => {
-
-    rabItems.push({
-      ...item,
-      volume: volume
+    // 5. Trigger Pop-up & Smart Checkbox
+    $('#inputSearch').on('change', function() {
+      const pilihan = $(this).val();
+      if (pilihan) {
+        const itemTerpilih = dataKatalog.find(item => item.designator === pilihan);
+        itemDraftSementara = itemTerpilih;
+
+        document.getElementById('modalDesignator').innerText = itemTerpilih.designator;
+        document.getElementById('modalUraian').innerText = itemTerpilih.uraian;
+        document.getElementById('modalSatuan').innerText = itemTerpilih.satuan;
+        
+        document.getElementById('modalHargaMat').innerText = formatRupiah(itemTerpilih.hargaMaterial);
+        document.getElementById('modalHargaJas').innerText = formatRupiah(itemTerpilih.hargaJasa);
+
+        const chkMat = document.getElementById('checkMaterial');
+        const chkJas = document.getElementById('checkJasa');
+        
+        let usedMat = itemRAB.some(rab => rab.designator === 'M-' + itemTerpilih.designator);
+        let usedJas = itemRAB.some(rab => rab.designator === 'J-' + itemTerpilih.designator);
+
+        if (itemTerpilih.hargaMaterial === 0 || usedMat) {
+          chkMat.checked = false;
+          chkMat.disabled = true;
+        } else {
+          chkMat.checked = true;
+          chkMat.disabled = false;
+        }
+
+        if (itemTerpilih.hargaJasa === 0 || usedJas) {
+          chkJas.checked = false;
+          chkJas.disabled = true;
+        } else {
+          chkJas.checked = true;
+          chkJas.disabled = false;
+        }
+
+        document.getElementById('modalVolume').value = '1';
+
+        if(!modalInstance) modalInstance = new bootstrap.Modal(document.getElementById('modalOpsiItem'));
+        modalInstance.show();
+
+        setTimeout(() => { 
+          document.getElementById('modalVolume').focus(); 
+          document.getElementById('modalVolume').select(); 
+          $(this).val(null).trigger('change.select2'); 
+        }, 500);
+      }
     });
 
-  });
+    // 6. Fungsi Menyimpan Pilihan Modal ke Tabel
+    function prosesTambahDariModal() {
+      const volume = parseFloat(document.getElementById('modalVolume').value) || 0;
+      if (volume <= 0) { alert("Volume harus lebih dari 0"); return; }
 
-  renderTable();
+      const includeMat = document.getElementById('checkMaterial').checked;
+      const includeJas = document.getElementById('checkJasa').checked;
 
-  document.getElementById("searchInput").value = "";
-  document.getElementById("resultList").innerHTML = "";
+      if (!includeMat && !includeJas) {
+        alert("Pilih minimal salah satu komponen biaya!");
+        return;
+      }
 
-  closeVolumeModal();
+      if (includeMat && itemDraftSementara.hargaMaterial > 0) {
+        itemRAB.push({ 
+          designator: 'M-' + itemDraftSementara.designator, 
+          uraian: itemDraftSementara.uraian, 
+          satuan: itemDraftSementara.satuan, 
+          volume: volume, 
+          totalMat: itemDraftSementara.hargaMaterial * volume, 
+          totalJas: 0, 
+          subTotal: itemDraftSementara.hargaMaterial * volume,
+          tipe: 'M',
+          originalIndex: itemDraftSementara.originalIndex // <-- Membawa Index
+        });
+      }
 
-}
+      if (includeJas && itemDraftSementara.hargaJasa > 0) {
+        itemRAB.push({ 
+          designator: 'J-' + itemDraftSementara.designator, 
+          uraian: itemDraftSementara.uraian, 
+          satuan: itemDraftSementara.satuan, 
+          volume: volume, 
+          totalMat: 0, 
+          totalJas: itemDraftSementara.hargaJasa * volume, 
+          subTotal: itemDraftSementara.hargaJasa * volume,
+          tipe: 'J',
+          originalIndex: itemDraftSementara.originalIndex // <-- Membawa Index
+        });
+      }
+      
+      renderTabel();
+      modalInstance.hide(); 
+      perbaruiStatusDropdown();
+      
+      setTimeout(() => { $('#inputSearch').select2('open'); }, 400);
+    }
 
-function renderTable(){
-
-  const tbody = document.getElementById("tbodyRab");
-
-  const itemCount = document.getElementById("itemCount");
-
-  if(itemCount){
-    itemCount.innerText = `${rabItems.length} Item`;
-  }
-
-  tbody.innerHTML = "";
-
-  rabItems.sort((a,b) => a.urutan - b.urutan);
-
-  let grandMaterial = 0;
-  let grandJasa = 0;
-
-  rabItems.forEach((item,index)=>{
-
-    const totalMaterial =
-      item.hargaMaterial * item.volume;
-
-    const totalJasa =
-      item.hargaJasa * item.volume;
-
-    grandMaterial += totalMaterial;
-    grandJasa += totalJasa;
-
-    tbody.innerHTML += `
-
-      <tr>
-
-        <td>
-          <b>${item.designator}</b>
-        </td>
-
-        <td>${item.uraian}</td>
-
-        <td>${item.satuan}</td>
-
-        <td class="right ${item.hargaMaterial === 0 ? 'price-zero' : 'price-nominal'}">
-          ${formatRupiah(item.hargaMaterial)}
-        </td>
-
-        <td class="right ${item.hargaJasa === 0 ? 'price-zero' : 'price-nominal'}">
-          ${formatRupiah(item.hargaJasa)}
-        </td>
-
-        <td class="right">
-
-          <input
-            type="number"
-            class="volume-input"
-            value="${item.volume}"
-            onchange="updateVolume(${index},this.value)"
-          >
-
-        </td>
-
-        <td class="right">
-          ${formatRupiah(totalMaterial + totalJasa)}
-        </td>
-
-        <td>
-          <button
-            class="btn-delete"
-            onclick="deleteItem(${index})"
-          >
-            Hapus
-          </button>
-        </td>
-
-      </tr>
-
-    `;
-
-  });
-
-  document.getElementById("grandMaterial").innerText =
-    formatRupiah(grandMaterial);
-
-  document.getElementById("grandJasa").innerText =
-    formatRupiah(grandJasa);
-
-  document.getElementById("grandTotal").innerText =
-    formatRupiah(grandMaterial + grandJasa);
-
-}
-
-function updateVolume(index,value){
-
-  rabItems[index].volume = Number(value);
-
-  renderTable();
-
-}
-
-function deleteItem(index){
-
-  rabItems.splice(index,1);
-
-  renderTable();
-
-}
-
-function saveRab(){
-
-  const namaPekerjaan =
-    document.getElementById("namaPekerjaan").value.trim();
-
-  if(!namaPekerjaan){
-    showSaveMessage("Nama pekerjaan wajib diisi.", "error");
-    document.getElementById("namaPekerjaan").focus();
-    return;
-  }
-
-  if(rabItems.length === 0){
-    showSaveMessage("Item RAB masih kosong.", "error");
-    return;
-  }
-
-  const payload = {
-    namaPekerjaan: namaPekerjaan,
-    items: rabItems.map(item => ({
-      designator: item.designator,
-      uraian: item.uraian,
-      satuan: item.satuan,
-      hargaMaterial: Number(item.hargaMaterial) || 0,
-      hargaJasa: Number(item.hargaJasa) || 0,
-      volume: Number(item.volume) || 0
-    }))
-  };
-
-  setSaveLoading(true);
-
-  google.script.run
-    .withSuccessHandler(function(response){
+    // 7. Fungsi Hapus Item dari Tabel
+    function hapusItem(index) {
+      itemRAB.splice(index, 1);
+      renderTabel();
+      perbaruiStatusDropdown();
+    }
     
-      setSaveLoading(false);
+    // FUNGSI BARU: Update Volume Langsung dari Tabel
+    function updateVolume(index, nilaiBaru) {
+      let volBaru = parseFloat(nilaiBaru);
+      
+      // Validasi: Jika angka tidak valid atau 0, kembalikan ke angka sebelumnya
+      if (isNaN(volBaru) || volBaru <= 0) {
+        tampilkanNotif("Volume tidak valid! Harus lebih dari 0.", null);
+        renderTabel(); // Render ulang untuk mengembalikan angka asli
+        return;
+      }
 
-      const rabId = response.rabId;
+      let item = itemRAB[index];
 
-      resetRabInput();
+      // Cari harga satuannya (Total lama dibagi volume lama)
+      let hargaSatuanMat = item.totalMat / item.volume;
+      let hargaSatuanJas = item.totalJas / item.volume;
 
-      showSaveMessage(
-        `RAB berhasil disimpan. ID: ${rabId}`,
-        "success"
-      );
+      // Update data di array dengan volume baru
+      item.volume = volBaru;
+      item.totalMat = hargaSatuanMat * volBaru;
+      item.totalJas = hargaSatuanJas * volBaru;
+      item.subTotal = item.totalMat + item.totalJas;
 
-    })
-    .withFailureHandler(function(error){
+      // Render ulang tabel agar total keseluruhan di bawah ikut berubah
+      renderTabel();
+      tampilkanNotif("Volume berhasil diperbarui!", null, 'success');
+    }
 
-      setSaveLoading(false);
+    // 8. Fungsi Render Tabel (Versi Warna Netral & Sorting KHS)
+    function renderTabel() {
+      itemRAB.sort((a, b) => a.originalIndex - b.originalIndex || (a.tipe === 'J' ? 1 : -1));
 
-      showSaveMessage(
-        error.message || "Gagal menyimpan RAB.",
-        "error"
-      );
+      const tbody = document.getElementById('bodyRAB');
+      const tfoot = document.getElementById('tfootRAB');
+      tbody.innerHTML = '';
+      
+      if(itemRAB.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-5 text-muted"><i class="bi bi-inbox fs-2 d-block mb-2 text-light"></i>Belum ada data pekerjaan yang ditambahkan.</td></tr>`;
+        tfoot.classList.add('hidden');
+        return;
+      }
 
-    })
-    .saveRab(payload);
+      tfoot.classList.remove('hidden');
+      let grandMat = 0, grandJas = 0, grandTot = 0;
 
-}
+      itemRAB.forEach((item, index) => {
+        grandMat += item.totalMat; 
+        grandJas += item.totalJas; 
+        grandTot += item.subTotal;
 
-function setSaveLoading(isLoading){
+        tbody.innerHTML += `
+          <tr>
+            <td class="fw-bold text-nowrap"><span class="badge bg-light text-dark border shadow-sm">${item.designator}</span></td>
+            <td><div style="font-size: 0.85rem;" title="${item.uraian}">${item.uraian}</div></td>
+            
+            <td class="text-center">
+              <input type="number" class="form-control form-control-sm text-center fw-bold text-corporate input-volume-inline mx-auto p-1" 
+                     value="${item.volume}" min="0.01" step="0.01" 
+                     onchange="updateVolume(${index}, this.value)" title="Ubah Volume">
+            </td>
+            
+            <td class="text-center"><span class="badge bg-secondary">${item.satuan}</span></td>
+            <td class="text-end text-muted small">${formatRupiah(item.totalMat)}</td>
+            <td class="text-end text-muted small">${formatRupiah(item.totalJas)}</td>
+            <td class="text-end fw-bold">${formatRupiah(item.subTotal)}</td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-light text-danger border-0" onclick="hapusItem(${index})" title="Hapus Baris"><i class="bi bi-trash3-fill"></i></button>
+            </td>
+          </tr>
+        `;
+      });
 
-  const button =
-    document.getElementById("btnSaveRab");
+      document.getElementById('grandMaterial').innerText = formatRupiah(grandMat);
+      document.getElementById('grandJasa').innerText = formatRupiah(grandJas);
+      document.getElementById('grandTotal').innerText = formatRupiah(grandTot);
+    }
 
-  if(!button){
-    return;
-  }
+    // 9. Format Angka ke Rupiah
+    function formatRupiah(angka) {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+    }
 
-  button.disabled = isLoading;
+    // Fungsi untuk menampilkan Pop-up Notifikasi (Hijau untuk sukses, Merah untuk error)
+    function tampilkanNotif(pesan, elemenFokusId, tipe = 'error') {
+      const toastEl = document.getElementById('notifToast');
+      const pesanEl = document.getElementById('pesanNotif');
+      
+      // Atur Warna & Ikon berdasarkan tipe
+      if (tipe === 'success') {
+        toastEl.classList.replace('text-bg-danger', 'text-bg-success');
+        pesanEl.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i>' + pesan;
+      } else {
+        toastEl.classList.replace('text-bg-success', 'text-bg-danger');
+        pesanEl.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2"></i>' + pesan;
+      }
+      
+      const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+      toast.show();
 
-  button.innerText = isLoading
-    ? "Menyimpan..."
-    : "Simpan RAB";
-
-}
-
-function showSaveMessage(message, type){
-
-  const box =
-    document.getElementById("saveMessage");
-
-  if(!box){
-    return;
-  }
-
-  box.className = `save-message ${type}`;
-  box.innerText = message;
-
-}
-
-function resetRabInput(){
-
-  rabItems = [];
-  currentSearchGroups = [];
-  selectedGroup = null;
-  includeMaterial = true;
-  includeJasa = true;
-
-  document.getElementById("namaPekerjaan").value = "";
-  document.getElementById("searchInput").value = "";
-  document.getElementById("resultList").innerHTML = "";
-
-  document.getElementById("volumeModal").style.display = "none";
-
-  renderTable();
-
-}
-
-function formatRupiah(number){
-
-  return "Rp " + Number(number || 0)
-    .toLocaleString("id-ID");
-
-}
-
-document.addEventListener("keydown", function(e){
-
-  const modalOpen =
-    document.getElementById("volumeModal").style.display === "flex";
-
-  if(!modalOpen){
-    return;
-  }
-
-  if(e.key === "Enter"){
-    confirmAddItem();
-  }
-
-  if(e.key === "Escape"){
-    closeVolumeModal();
-  }
-
-});
-
-</script>
-
-<div class="modal-overlay" id="volumeModal">
-  <div class="modal-card">
-
-    <h2 id="modalDesignator">Designator</h2>
-    <p id="modalUraian">Uraian pekerjaan</p>
-
-    <label>Volume</label>
-
-    <div class="volume-control">
-      <button onclick="kurangVolume()">-</button>
-      <input
-        type="number"
-        id="modalVolume"
-        value="1"
-        min="1"
-        oninput="updateModalPreview()"
-      >
-      <button onclick="tambahVolume()">+</button>
-    </div>
-
-    <div class="option-grid">
+      if (elemenFokusId) {
+        setTimeout(() => { document.getElementById(elemenFokusId).focus(); }, 100);
+      }
+    }
     
-      <div
-        id="materialOptionCard"
-        class="option-card active"
-        onclick="toggleOption('material')"
-      >
-        <div class="option-card-title">Material</div>
-        <small id="materialOptionDesc">Uraian material</small>
-        <div class="option-badge" id="materialOptionBadge">Dipilih</div>
-      </div>
+    // 10. Fungsi Snapshot Tabel ke Clipboard (Dengan Notifikasi Toast)
+    async function copyTableToClipboard() {
+      // --- VALIDASI 1: Cek apakah tabel RAB kosong ---
+      if (itemRAB.length === 0) {
+        tampilkanNotif("Tabel RAB masih kosong! Tambahkan minimal satu item pekerjaan.", "inputSearch");
+        // Karena inputSearch menggunakan Select2, kita buka dropdown-nya
+        setTimeout(() => { $('#inputSearch').select2('open'); }, 200); 
+        return; 
+      }
 
-      <div
-        id="jasaOptionCard"
-        class="option-card active"
-        onclick="toggleOption('jasa')"
-      >
-        <div class="option-card-title">Jasa</div>
-        <small id="jasaOptionDesc">Uraian jasa</small>
-        <div class="option-badge" id="jasaOptionBadge">Dipilih</div>
-      </div>
+      // --- VALIDASI 2: Cek apakah Nama Pekerjaan belum diisi ---
+      const inputNama = document.getElementById('inputNamaPekerjaan');
+      if (!inputNama || inputNama.value.trim() === "") {
+        tampilkanNotif("NAMA PEKERJAAN belum diisi! Harap isi untuk identifikasi.", "inputNamaPekerjaan");
+        return; 
+      }
 
+      // Jika lolos validasi, lanjutkan proses copy...
+      const btn = document.getElementById('btnCopyGambar');
+      const originalHTML = btn.innerHTML;
+      
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Memproses...';
+      btn.disabled = true;
+
+      const areaCapture = document.getElementById('areaTabelRAB');
+
+      try {
+        const canvas = await html2canvas(areaCapture, {
+          scale: 2, 
+          backgroundColor: '#ffffff' 
+        });
+
+        canvas.toBlob(async function(blob) {
+          try {
+            const item = new ClipboardItem({ 'image/png': blob });
+            await navigator.clipboard.write([item]);
+            
+            // Cuplikan di dalam copyTableToClipboard
+            btn.innerHTML = '<i class="bi bi-check2-all"></i> Berhasil Disalin!';
+            btn.classList.replace('btn-outline-danger', 'btn-success'); // Ini sudah benar (Hijau)
+            btn.classList.add('text-white');
+            
+            setTimeout(() => {
+              btn.innerHTML = originalHTML;
+              btn.classList.replace('btn-success', 'btn-outline-danger');
+              btn.classList.remove('text-white');
+              btn.disabled = false;
+            }, 2500);
+            
+          } catch (err) {
+            console.error("Gagal menyalin ke clipboard:", err);
+            tampilkanNotif("Browser tidak mendukung copy otomatis, atau izin ditolak.");
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
+          }
+        });
+      } catch (err) {
+        console.error("Gagal merender gambar:", err);
+        tampilkanNotif("Terjadi kesalahan saat memproses gambar tabel.");
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+      }
+    }
+
+    // 11. Fungsi Download Tabel sebagai Gambar PNG
+    async function downloadTableAsImage() {
+      // Validasi 1: Cek Tabel
+      if (itemRAB.length === 0) {
+        tampilkanNotif("Tabel kosong! Tidak ada yang bisa didownload.", "inputSearch");
+        return;
+      }
+
+      // Validasi 2: Cek Nama Pekerjaan
+      const namaPekerjaan = document.getElementById('inputNamaPekerjaan').value.trim();
+      if (namaPekerjaan === "") {
+        tampilkanNotif("Isi NAMA PEKERJAAN untuk memberi nama file!", "inputNamaPekerjaan");
+        return;
+      }
+
+      const btn = document.getElementById('btnDownloadGambar');
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+      btn.disabled = true;
+
+      const areaCapture = document.getElementById('areaTabelRAB');
+
+      try {
+        const canvas = await html2canvas(areaCapture, {
+          scale: 2,
+          backgroundColor: '#ffffff'
+        });
+
+        // Membuat link download otomatis
+        const link = document.createElement('a');
+        // Nama file otomatis sesuai Nama Pekerjaan yang diinput
+        link.download = `RAB_${namaPekerjaan.replace(/\s+/g, '_')}.png`; 
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+
+        tampilkanNotif("Gambar berhasil diunduh!", null, 'success');
+        
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+      } catch (err) {
+        console.error("Gagal download:", err);
+        tampilkanNotif("Terjadi kesalahan saat mengunduh gambar.");
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+      }
+    }
+  </script>
+
+  <!-- Modal Pilihan Material & Jasa -->
+  <div class="modal fade" id="modalOpsiItem" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header bg-corporate text-white border-0">
+          <h6 class="modal-title fw-bold" id="modalLabel"><i class="bi bi-sliders me-2"></i>Atur Komponen RAB</h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="mb-4 text-center">
+            <span class="badge bg-light text-dark border border-secondary fs-6 mb-2" id="modalDesignator"></span>
+            <p class="small text-muted mb-0 fw-medium" id="modalUraian"></p>
+          </div>
+
+          <div class="mb-4 p-3 bg-light rounded border">
+            <label class="form-label text-dark mb-3"><i class="bi bi-check2-square me-1"></i> Centang Komponen Biaya:</label>
+            
+            <div class="form-check form-switch mb-3 d-flex align-items-center">
+              <input class="form-check-input fs-5 mt-0 me-3" type="checkbox" id="checkMaterial" checked>
+              <label class="form-check-label d-flex justify-content-between w-100" for="checkMaterial">
+                <span class="fw-bold">Material</span>
+                <span class="text-muted" id="modalHargaMat">Rp 0</span>
+              </label>
+            </div>
+            
+            <div class="form-check form-switch d-flex align-items-center">
+              <input class="form-check-input fs-5 mt-0 me-3" type="checkbox" id="checkJasa" checked>
+              <label class="form-check-label d-flex justify-content-between w-100" for="checkJasa">
+                <span class="fw-bold">Jasa</span>
+                <span class="text-muted" id="modalHargaJas">Rp 0</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label text-corporate">Volume Lapangan (<span id="modalSatuan"></span>)</label>
+            <input type="number" id="modalVolume" class="form-control form-control-lg fw-bold text-center border-dark" min="0.01" step="0.01" value="1" style="background-color: #f8fafc;">
+          </div>
+        </div>
+        <div class="modal-footer border-0 bg-light">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-corporate fw-bold px-4" onclick="prosesTambahDariModal()">+ Tambahkan ke RAB</button>
+        </div>
+      </div>
     </div>
-
-    <div class="item-summary">
-      <div class="item-summary-title">Yang akan ditambahkan</div>
-      <div id="modalItemPreview"></div>
-    </div>
-
-    <div class="total-preview">
-      <div class="total-preview-line">
-        <span>Total Material</span>
-        <b id="modalTotalMaterial">Rp 0</b>
-      </div>
-
-      <div class="total-preview-line">
-        <span>Total Jasa</span>
-        <b id="modalTotalJasa">Rp 0</b>
-      </div>
-
-      <div class="total-preview-line grand">
-        <span>Estimasi Total</span>
-        <b id="modalGrandTotal">Rp 0</b>
-      </div>
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeVolumeModal()">Batal</button>
-      <button class="btn-add" id="btnConfirmAdd" onclick="confirmAddItem()">
-        Tambahkan
-      </button>
-    </div>
-
   </div>
-</div>
+
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+    <div id="notifToast" class="toast align-items-center text-bg-danger border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body fw-medium" id="pesanNotif">
+          </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
