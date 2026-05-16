@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistem RAB Maintenance</title>
+  <title>RABIT - RAB Instant Tool</title>
   
   <!-- Font & CSS Bootstrap -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -87,27 +87,498 @@
       outline: none;
       box-shadow: 0 0 5px rgba(227, 30, 36, 0.2);
     }
+
+    /* =========================================================
+    FULL BRANDING THEME - RABIT
+    Tambahkan di bagian paling bawah dalam <style>
+    ========================================================= */
+    :root {
+      --rabit-primary: #e31e24;
+      --rabit-primary-dark: #b9151b;
+      --rabit-primary-soft: #fdebec;
+      --rabit-ink: #1f2937;
+      --rabit-muted: #6b7280;
+      --rabit-bg: #f5f7fb;
+      --rabit-card: #ffffff;
+      --rabit-border: #e8edf3;
+      --rabit-shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
+      --rabit-shadow-soft: 0 6px 18px rgba(17, 24, 39, 0.05);
+      --rabit-radius: 16px;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(227, 30, 36, 0.05), transparent 20%),
+        linear-gradient(180deg, #f8fafc 0%, #f4f7f6 100%);
+      color: var(--rabit-ink);
+    }
+    
+    /* ===== PREMIUM NAVBAR ===== */
+    .navbar-premium-wrap {
+      padding-top: 8px;
+    }
+    
+    .navbar-premium {
+      background: linear-gradient(135deg, var(--rabit-primary) 0%, var(--rabit-primary-dark) 100%);
+      border-radius: 18px;
+      padding: 1rem 1.25rem;
+      box-shadow: 0 14px 32px rgba(227, 30, 36, 0.18);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .navbar-premium-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .brand-rabit {
+      display: flex;
+      align-items: center;
+      gap: 0.95rem;
+    }
+    
+    .brand-logo-rabit {
+      width: 50px;
+      height: 50px;
+      min-width: 50px;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.98);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+      border: 1px solid rgba(255,255,255,0.85);
+    }
+    
+    .brand-logo-rabit svg {
+      width: 30px;
+      height: 30px;
+      stroke: var(--rabit-primary);
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    
+    .brand-text-group {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+    }
+    
+    .brand-title-rabit {
+      color: #ffffff;
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin: 0;
+    }
+    
+    .brand-subtitle-rabit {
+      color: rgba(255,255,255,0.84);
+      font-size: 0.78rem;
+      font-weight: 500;
+      margin-top: 4px;
+      letter-spacing: 0.3px;
+    }
+    
+    .brand-badge-right {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 0.9rem;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 999px;
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      white-space: nowrap;
+    }
+    
+    /* ===== HERO / BRAND STRIP ===== */
+    .hero-rabit {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.94));
+      border: 1px solid var(--rabit-border);
+      border-radius: 18px;
+      box-shadow: var(--rabit-shadow);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    
+    .hero-rabit-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--rabit-ink);
+      margin-bottom: 0.2rem;
+    }
+    
+    .hero-rabit-desc {
+      color: var(--rabit-muted);
+      font-size: 0.9rem;
+      margin-bottom: 0;
+    }
+    
+    .hero-rabit-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 0.8rem;
+      background: var(--rabit-primary-soft);
+      color: var(--rabit-primary-dark);
+      border: 1px solid #f8c9cc;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    
+    /* ===== CARD ===== */
+    .card {
+      border: 1px solid var(--rabit-border);
+      border-radius: 18px;
+      box-shadow: var(--rabit-shadow-soft);
+      background: var(--rabit-card);
+    }
+    
+    .card-header {
+      background: linear-gradient(180deg, #ffffff, #fbfcfe);
+      border-bottom: 1px solid var(--rabit-border);
+      padding: 1rem 1.25rem;
+      border-radius: 18px 18px 0 0 !important;
+    }
+    
+    .card-header-title {
+      font-weight: 700;
+      margin: 0;
+      font-size: 1.02rem;
+      color: var(--rabit-ink);
+    }
+    
+    /* ===== FORM ===== */
+    .form-label {
+      font-weight: 700;
+      font-size: 0.78rem;
+      color: var(--rabit-muted);
+      margin-bottom: 0.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    
+    .form-control,
+    .select2-container--bootstrap-5 .select2-selection {
+      border-radius: 10px !important;
+      border: 1px solid #dce3ea !important;
+    }
+    
+    .form-control:focus,
+    .select2-container--bootstrap-5.select2-container--focus .select2-selection {
+      border-color: #e78d90 !important;
+      box-shadow: 0 0 0 0.2rem rgba(227, 30, 36, 0.12) !important;
+    }
+    
+    /* ===== BUTTON BRAND ===== */
+    .btn-corporate {
+      background: linear-gradient(135deg, var(--rabit-primary), var(--rabit-primary-dark));
+      border-color: var(--rabit-primary);
+      color: #fff;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    
+    .btn-corporate:hover {
+      background: linear-gradient(135deg, #cf1b20, #a91319);
+      border-color: #cf1b20;
+      color: #fff;
+    }
+    
+    .btn-outline-primary {
+      border-color: #d8dee7;
+      color: var(--rabit-ink);
+      background-color: #fff;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    
+    .btn-outline-primary:hover {
+      background: var(--rabit-primary);
+      border-color: var(--rabit-primary);
+      color: #fff;
+    }
+    
+    .btn-outline-danger {
+      border-color: #f0c7cb;
+      color: var(--rabit-primary-dark);
+      background-color: #fff7f7;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    
+    .btn-outline-danger:hover {
+      background: var(--rabit-primary);
+      border-color: var(--rabit-primary);
+      color: #fff;
+    }
+    
+    .btn-outline-secondary {
+      border-color: #dbe1ea;
+      color: #475569;
+      background-color: #ffffff;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    
+    .btn-outline-secondary:hover {
+      background: #475569;
+      border-color: #475569;
+      color: #fff;
+    }
+    
+    /* ===== TABLE ===== */
+    .table-container {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--rabit-border);
+      background: #fff;
+    }
+    
+    .table thead th {
+      background: linear-gradient(180deg, #f8fafc, #f2f5f9);
+      color: #475569;
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--rabit-border);
+    }
+    
+    .table tbody td {
+      border-bottom: 1px solid #eef2f6;
+    }
+    
+    .table-hover > tbody > tr:hover > * {
+      background-color: #fcfcfd;
+    }
+    
+    #tfootRAB tr.table-light td {
+      background: #fbfcfe !important;
+    }
+    
+    /* ===== BADGES ===== */
+    .badge.bg-secondary {
+      background: #eef2f7 !important;
+      color: #334155 !important;
+    }
+    
+    .badge.bg-light.text-dark.border.shadow-sm {
+      background: #fff8f8 !important;
+      color: var(--rabit-primary-dark) !important;
+      border: 1px solid #f3c4c7 !important;
+      box-shadow: none !important;
+    }
+    
+    /* ===== INLINE VOLUME INPUT ===== */
+    .input-volume-inline {
+      width: 74px;
+      background-color: #fffaf9;
+      border: 1px dashed #e4afb2;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    
+    .input-volume-inline:focus {
+      background-color: #ffffff;
+      border: 1px solid var(--rabit-primary) !important;
+      outline: none;
+      box-shadow: 0 0 0 0.18rem rgba(227, 30, 36, 0.12);
+    }
+    
+    /* ===== LOADER ===== */
+    #loader {
+      padding: 4rem 0;
+    }
+    
+    #loader h5 {
+      color: #64748b !important;
+    }
+    
+    /* ===== MODAL ===== */
+    .modal-content {
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    
+    .modal-header.bg-corporate,
+    .modal-header.bg-danger {
+      background: linear-gradient(135deg, var(--rabit-primary), var(--rabit-primary-dark)) !important;
+    }
+    
+    .modal-footer.bg-light {
+      background: #fafbfc !important;
+    }
+    
+    /* ===== TOAST ===== */
+    .toast {
+      border-radius: 14px !important;
+    }
+    
+    /* ===== FOOTER ===== */
+    .footer-rabit {
+      margin-top: 1.5rem;
+      background: linear-gradient(180deg, #ffffff, #fbfcfe);
+      border: 1px solid var(--rabit-border);
+      border-radius: 16px;
+      box-shadow: var(--rabit-shadow-soft);
+      padding: 0.9rem 1rem;
+    }
+    
+    .footer-rabit-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .footer-rabit-mini {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: var(--rabit-primary-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #f6d5d7;
+    }
+    
+    .footer-rabit-mini svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--rabit-primary);
+      fill: none;
+      stroke-width: 2.1;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    
+    .footer-rabit-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin: 0;
+      color: var(--rabit-ink);
+    }
+    
+    .footer-rabit-sub {
+      margin: 0;
+      font-size: 0.78rem;
+      color: var(--rabit-muted);
+    }
+    
+    .footer-rabit-right {
+      font-size: 0.78rem;
+      color: #64748b;
+      text-align: right;
+    }
+    
+    @media (max-width: 768px) {
+      .navbar-premium {
+        padding: 0.95rem 1rem;
+      }
+    
+      .brand-logo-rabit {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+      }
+    
+      .brand-title-rabit {
+        font-size: 1.15rem;
+      }
+    
+      .brand-subtitle-rabit {
+        font-size: 0.72rem;
+      }
+    
+      .hero-rabit {
+        padding: 1rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .navbar-premium-inner,
+      .footer-rabit-flex {
+        flex-direction: column;
+        align-items: flex-start !important;
+      }
+    
+      .brand-badge-right,
+      .footer-rabit-right {
+        align-self: flex-start;
+        text-align: left;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-dark bg-corporate shadow-sm mb-4 py-3">
-    <div class="container-fluid px-4">
-      <span class="navbar-brand mb-0 h1 fw-bold d-flex align-items-center gap-2">
-        <i class="bi bi-tools"></i> 
-        Sistem Pembuatan RAB Maintenance
-      </span>
-      <span class="text-white opacity-75 small"><i class="bi bi-clock-history"></i> KHS TA - TIF 2026</span>
-    </div>
-  </nav>
+    <!-- Premium Navbar -->
+  <div class="container-fluid px-4 navbar-premium-wrap">
+    <nav class="navbar-premium mb-4">
+      <div class="d-flex justify-content-between align-items-center navbar-premium-inner">
+        
+        <div class="brand-rabit">
+          <div class="brand-logo-rabit">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <ellipse cx="24" cy="16" rx="6" ry="15"></ellipse>
+              <ellipse cx="40" cy="16" rx="6" ry="15"></ellipse>
+              <circle cx="32" cy="36" r="16"></circle>
+              <circle cx="26.5" cy="35" r="1.7" fill="#e31e24" stroke="none"></circle>
+              <circle cx="37.5" cy="35" r="1.7" fill="#e31e24" stroke="none"></circle>
+              <path d="M30 40.5c1.3 1 2.7 1 4 0"></path>
+              <path d="M24 45c2.5 3 5 4 8 4s5.5-1 8-4"></path>
+            </svg>
+          </div>
+
+          <div class="brand-text-group">
+            <h1 class="brand-title-rabit">RABIT</h1>
+            <div class="brand-subtitle-rabit">RAB Instant Tool</div>
+          </div>
+        </div>
+
+        <div class="brand-badge-right">
+          <i class="bi bi-clock-history"></i>
+          <span>KHS TA - TIF 2026</span>
+        </div>
+
+      </div>
+    </nav>
+  </div>
 
   <div class="container-fluid px-4 pb-5">
+
+    <!-- Hero Branding RABIT -->
+    <div class="hero-rabit">
+      <div class="row align-items-center g-3">
+        <div class="col-lg-8">
+          <div class="hero-rabit-title">Selamat datang di RABIT</div>
+          <p class="hero-rabit-desc">
+            Platform input RAB yang cepat, praktis, dan sinkron dengan format KHS.
+          </p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <span class="hero-rabit-chip">
+            <i class="bi bi-lightning-charge-fill"></i>
+            Faster RAB Workflow
+          </span>
+        </div>
+      </div>
+    </div>
     
     <!-- Loading Screen -->
     <div id="loader">
       <div class="spinner-border text-corporate mb-3" role="status" style="width: 3rem; height: 3rem;"></div>
-      <h5 class="text-muted fw-normal">Menghubungkan ke Database KHS...</h5>
+      <h5 class="text-muted fw-normal">RABIT sedang menghubungkan ke Database KHS...</h5>
     </div>
 
     <!-- Main Dashboard -->
@@ -117,7 +588,7 @@
       <div class="col-lg-4">
         <div class="card h-100">
           <div class="card-header">
-            <h5 class="card-header-title"><i class="bi bi-plus-square-fill text-secondary me-2"></i> Form Input Lapangan</h5>
+            <h5 class="card-header-title"><i class="bi bi-plus-square-fill text-secondary me-2"></i> Form Input RAB</h5>
           </div>
           <div class="card-body">
             <div class="mb-3">
@@ -129,7 +600,7 @@
             
             <div class="text-center mt-4 p-3 bg-light rounded border border-dashed">
               <i class="bi bi-hand-index-thumb fs-1 text-secondary mb-2 d-block"></i>
-              <p class="small text-muted mb-0">Pilih item dari pencarian di atas. Pop-up pengaturan Material & Jasa akan otomatis muncul.</p>
+              <p class="small text-muted mb-0">Pilih item designator dari pencarian di atas. Pop-up pilihan Material & Jasa akan otomatis muncul.</p>
             </div>
           </div>
         </div>
@@ -141,11 +612,33 @@
             <h5 class="card-header-title"><i class="bi bi-table text-secondary me-2"></i> Rincian Draft RAB</h5>
             
             <div class="d-flex gap-2" data-html2canvas-ignore="true"> 
-              <button class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1" id="btnCopyGambar" onclick="copyTableToClipboard()">
+              <button class="btn btn-sm btn-corporate d-flex align-items-center gap-1" id="btnCopyGambar" onclick="copyTableToClipboard()">
                 <i class="bi bi-clipboard"></i> Copy Gambar
               </button>
-              <button class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1" id="btnDownloadGambar" onclick="downloadTableAsImage()">
-                <i class="bi bi-download"></i> Download
+              <div class="btn-group">
+                <button type="button" 
+                        class="btn btn-sm btn-outline-primary dropdown-toggle d-flex align-items-center gap-1" 
+                        id="btnDownloadGambar" 
+                        data-bs-toggle="dropdown" 
+                        aria-expanded="false">
+                  <i class="bi bi-download"></i> Download
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                  <li>
+                    <button class="dropdown-item d-flex align-items-center gap-2" type="button" onclick="downloadTableAsImage()">
+                      <i class="bi bi-image"></i> Download Gambar Tabel
+                    </button>
+                  </li>
+                  <li>
+                    <button class="dropdown-item d-flex align-items-center gap-2" type="button" onclick="downloadExcelRAB()">
+                      <i class="bi bi-file-earmark-excel"></i> Download Excel KHS
+                    </button>
+                  </li>
+                </ul>
+              </div>
+              <button class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1" id="btnResetTabel" onclick="bukaKonfirmasiReset()">
+                <i class="bi bi-arrow-clockwise"></i> Reset Tabel
               </button>
             </div>
             
@@ -216,6 +709,7 @@
     let itemRAB = [];
     let itemDraftSementara = null;
     let modalInstance = null;
+    let resetModalInstance = null;
 
     // 1. Ambil data saat web dimuat
     window.onload = function() {
@@ -645,6 +1139,118 @@
         btn.disabled = false;
       }
     }
+
+    function downloadExcelRAB() {
+      // Validasi 1: Cek Tabel
+      if (itemRAB.length === 0) {
+        tampilkanNotif("Tabel kosong! Tidak ada data untuk dibuat Excel.", "inputSearch");
+        setTimeout(() => { $('#inputSearch').select2('open'); }, 200);
+        return;
+      }
+    
+      // Validasi 2: Cek Nama Pekerjaan
+      const namaPekerjaan = document.getElementById('inputNamaPekerjaan').value.trim();
+      if (namaPekerjaan === "") {
+        tampilkanNotif("Isi NAMA PEKERJAAN untuk memberi nama file Excel!", "inputNamaPekerjaan");
+        return;
+      }
+    
+      const btn = document.getElementById('btnDownloadGambar');
+      const originalHTML = btn.innerHTML;
+    
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Membuat Excel...';
+      btn.disabled = true;
+    
+      google.script.run
+        .withSuccessHandler(function(result) {
+          try {
+            if (!result || !result.base64) {
+              throw new Error("Data Excel tidak diterima dari server.");
+            }
+    
+            // Convert base64 dari Apps Script menjadi file Excel di browser
+            const byteCharacters = atob(result.base64);
+            const byteNumbers = new Array(byteCharacters.length);
+    
+            for (let i = 0; i < byteCharacters.length; i++) {
+              byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+    
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: result.mimeType });
+    
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+    
+            link.href = url;
+            link.download = result.fileName;
+            document.body.appendChild(link);
+            link.click();
+    
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+    
+            tampilkanNotif("File Excel berhasil diunduh!", null, 'success');
+    
+          } catch (err) {
+            console.error("Gagal memproses file Excel:", err);
+            tampilkanNotif("Gagal memproses file Excel di browser.");
+          }
+    
+          btn.innerHTML = originalHTML;
+          btn.disabled = false;
+        })
+        .withFailureHandler(function(error) {
+          console.error("Gagal membuat Excel:", error);
+          tampilkanNotif(error.message || "Terjadi kesalahan saat membuat file Excel.");
+    
+          btn.innerHTML = originalHTML;
+          btn.disabled = false;
+        })
+        .buatExcelRAB(itemRAB, namaPekerjaan);
+    }
+
+    function bukaKonfirmasiReset() {
+      const namaPekerjaanEl = document.getElementById('inputNamaPekerjaan');
+      const namaPekerjaan = namaPekerjaanEl ? namaPekerjaanEl.value.trim() : '';
+
+      if (itemRAB.length === 0 && namaPekerjaan === "") {
+        tampilkanNotif("Tabel RAB sudah kosong.", "inputSearch");
+        setTimeout(() => { $('#inputSearch').select2('open'); }, 200);
+        return;
+      }
+
+      if (!resetModalInstance) {
+        resetModalInstance = new bootstrap.Modal(document.getElementById('modalKonfirmasiReset'));
+      }
+
+      resetModalInstance.show();
+    }
+
+    function resetTabelRAB() {
+      const namaPekerjaanEl = document.getElementById('inputNamaPekerjaan');
+
+      itemRAB = [];
+      itemDraftSementara = null;
+
+      if (namaPekerjaanEl) {
+        namaPekerjaanEl.value = "";
+      }
+
+      renderTabel();
+      perbaruiStatusDropdown();
+      $('#inputSearch').val(null).trigger('change.select2');
+
+      if (resetModalInstance) {
+        resetModalInstance.hide();
+      }
+
+      tampilkanNotif("Tabel RAB berhasil di-reset.", null, 'success');
+
+      setTimeout(() => {
+        $('#inputSearch').select2('open');
+      }, 300);
+    }
   </script>
 
   <!-- Modal Pilihan Material & Jasa -->
@@ -694,12 +1300,78 @@
     </div>
   </div>
 
+  <!-- Modal Konfirmasi Reset Tabel -->
+  <div class="modal fade" id="modalKonfirmasiReset" tabindex="-1" aria-labelledby="modalKonfirmasiResetLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+
+        <div class="modal-header bg-danger text-white border-0">
+          <h6 class="modal-title fw-bold" id="modalKonfirmasiResetLabel">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>Konfirmasi Reset Tabel
+          </h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-4 text-center">
+          <i class="bi bi-arrow-clockwise text-danger" style="font-size: 3rem;"></i>
+          <h5 class="fw-bold mt-3 mb-2">Reset seluruh tabel RAB?</h5>
+          <p class="text-muted mb-0">
+            Semua item pekerjaan yang sudah ditambahkan akan dihapus dari tabel.
+          </p>
+        </div>
+
+        <div class="modal-footer border-0 bg-light justify-content-center">
+          <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+            Batal
+          </button>
+          <button type="button" class="btn btn-danger fw-bold px-4" onclick="resetTabelRAB()">
+            Ya, Reset Tabel
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
     <div id="notifToast" class="toast align-items-center text-bg-danger border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="d-flex">
         <div class="toast-body fw-medium" id="pesanNotif">
           </div>
         <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Branding RABIT -->
+  <div class="container-fluid px-4 pb-4">
+    <div class="footer-rabit">
+      <div class="d-flex justify-content-between align-items-center footer-rabit-flex gap-3">
+
+        <div class="footer-rabit-brand">
+          <div class="footer-rabit-mini">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <ellipse cx="24" cy="16" rx="6" ry="15"></ellipse>
+              <ellipse cx="40" cy="16" rx="6" ry="15"></ellipse>
+              <circle cx="32" cy="36" r="16"></circle>
+              <circle cx="26.5" cy="35" r="1.6" fill="#e31e24" stroke="none"></circle>
+              <circle cx="37.5" cy="35" r="1.6" fill="#e31e24" stroke="none"></circle>
+              <path d="M30 40.5c1.3 1 2.7 1 4 0"></path>
+              <path d="M24 45c2.5 3 5 4 8 4s5.5-1 8-4"></path>
+            </svg>
+          </div>
+
+          <div>
+            <p class="footer-rabit-title">RABIT</p>
+            <p class="footer-rabit-sub">RAB Instant Tool • Smart Maintenance Estimator</p>
+          </div>
+        </div>
+
+        <div class="footer-rabit-right">
+          <div>MBS Project</div>
+          <div>Built for faster field-to-RAB workflow</div>
+        </div>
+
       </div>
     </div>
   </div>
